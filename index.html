@@ -125,16 +125,14 @@
         }
 
         /* =========================================
-           CABECERA FIJA (SIN RECORRIDO UCN)
+           CABECERA (NO ESTÁTICA)
            ========================================= */
         .site-header {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-            box-shadow: 0 4px 20px rgba(0, 56, 118, 0.05);
+            position: relative;
+            z-index: 40;
+            background: var(--white);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+            box-shadow: 0 4px 20px rgba(0, 56, 118, 0.04);
         }
 
         .header-inner {
@@ -472,12 +470,8 @@
         }
 
         /* =========================================
-           2. PUNTO 1: SALUDO INSTITUCIONAL EN VIDEO
+           ESTILOS INTERNOS DEL PUNTO 1 (VIDEO SALUDO)
            ========================================= */
-        .video-section {
-            padding: 1.5rem 0 2.5rem;
-        }
-
         .video-card {
             background: linear-gradient(135deg, var(--ucn-blue) 0%, var(--ucn-dark) 60%, #0f172a 100%);
             border-radius: var(--radius-2xl);
@@ -654,35 +648,35 @@
         }
 
         /* =========================================
-           3. HUB CREATIVO DE NAVEGACIÓN (SIN "TABLERO/ESTACIÓN")
+           MENÚ INTERACTIVO CREATIVO Y AMIGABLE
            ========================================= */
         .hub-section {
-            padding: 2.5rem 0 2rem;
+            padding: 1.5rem 0 3.5rem;
         }
 
         .hub-header {
             text-align: center;
-            max-width: 720px;
-            margin: 0 auto 2.25rem;
+            max-width: 760px;
+            margin: 0 auto 2.5rem;
         }
 
         .hub-badge {
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
-            padding: 0.35rem 1rem;
+            gap: 0.45rem;
+            padding: 0.4rem 1.1rem;
             border-radius: 999px;
-            background: rgba(0, 102, 204, 0.1);
-            color: var(--ucn-light-blue);
+            background: linear-gradient(90deg, rgba(0, 102, 204, 0.12), rgba(0, 168, 232, 0.15));
+            color: var(--ucn-blue);
             font-weight: 800;
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            margin-bottom: 0.65rem;
+            margin-bottom: 0.75rem;
         }
 
         .hub-title {
-            font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+            font-size: clamp(1.85rem, 3.2vw, 2.6rem);
             color: var(--ucn-dark);
             font-weight: 800;
         }
@@ -693,41 +687,42 @@
 
         .hub-subtitle {
             color: var(--slate-600);
-            font-size: 0.98rem;
+            font-size: 1rem;
             margin-top: 0.5rem;
         }
 
-        /* Grid Creativo Tipo Bento / Cápsulas Flotantes 3D */
+        /* Tarjetas Creativas Tipo Bento Amigable */
         .creative-hub-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
         }
 
         @media (min-width: 640px) {
             .creative-hub-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 1.25rem;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.4rem;
             }
         }
 
         @media (min-width: 1024px) {
             .creative-hub-grid {
-                grid-template-columns: repeat(6, 1fr);
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.6rem;
             }
         }
 
         .hub-card {
             position: relative;
             background: var(--white);
-            border-radius: 1.75rem;
-            padding: 1.4rem 1rem 1.25rem;
+            border-radius: 1.85rem;
+            padding: 1.6rem 1.5rem;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            text-align: center;
+            text-align: left;
+            gap: 1.25rem;
             border: 2px solid rgba(0, 56, 118, 0.08);
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 12px 28px -8px rgba(0, 56, 118, 0.08);
             transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
             overflow: hidden;
         }
@@ -736,44 +731,67 @@
             content: '';
             position: absolute;
             top: 0;
+            bottom: 0;
             left: 0;
-            right: 0;
-            height: 5px;
+            width: 7px;
             background: var(--card-accent, var(--ucn-light-blue));
-            opacity: 0.85;
-            transition: height 0.3s ease;
+            transition: width 0.3s ease;
+        }
+
+        .hub-card::after {
+            content: '';
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: var(--orb-bg, #eff6ff);
+            right: -45px;
+            bottom: -45px;
+            z-index: 0;
+            opacity: 0.65;
+            transition: transform 0.4s ease;
         }
 
         .hub-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-7px) scale(1.01);
             box-shadow: var(--shadow-xl);
             border-color: var(--card-accent, var(--ucn-light-blue));
         }
 
+        .hub-card:hover::after {
+            transform: scale(1.35);
+        }
+
         .hub-card.active {
-            background: linear-gradient(155deg, var(--ucn-blue) 0%, var(--ucn-dark) 100%);
+            background: linear-gradient(135deg, var(--ucn-blue) 0%, var(--ucn-dark) 100%);
             color: var(--white);
             border-color: var(--ucn-gold);
             transform: translateY(-6px);
-            box-shadow: 0 20px 30px -10px rgba(0, 56, 118, 0.45);
+            box-shadow: 0 22px 35px -10px rgba(0, 56, 118, 0.45);
         }
 
         .hub-card.active::before {
-            height: 6px;
+            width: 9px;
             background: var(--ucn-gold);
         }
 
+        .hub-card.active::after {
+            background: rgba(255, 184, 0, 0.12);
+        }
+
         .hub-icon-orb {
-            width: 4.4rem;
-            height: 4.4rem;
+            position: relative;
+            z-index: 2;
+            width: 4.8rem;
+            height: 4.8rem;
             border-radius: 1.4rem;
             background: var(--orb-bg, #eff6ff);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 0.85rem;
+            flex-shrink: 0;
             transition: transform 0.35s ease, background 0.35s ease;
-            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
         }
 
         .hub-card.active .hub-icon-orb {
@@ -781,25 +799,32 @@
         }
 
         .hub-card:hover .hub-icon-orb {
-            transform: scale(1.1) rotate(5deg);
+            transform: scale(1.1) rotate(-5deg);
         }
 
         .hub-icon-orb img {
-            width: 2.8rem;
-            height: 2.8rem;
+            width: 3.1rem;
+            height: 3.1rem;
             object-fit: contain;
         }
 
+        .hub-card-info {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+        }
+
         .hub-step-tag {
+            display: inline-block;
             font-size: 0.68rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            padding: 0.2rem 0.65rem;
+            padding: 0.22rem 0.7rem;
             border-radius: 999px;
-            background: rgba(0, 102, 204, 0.09);
-            color: var(--ucn-light-blue);
-            margin-bottom: 0.45rem;
+            background: var(--orb-bg, rgba(0, 102, 204, 0.1));
+            color: var(--card-accent, var(--ucn-light-blue));
+            margin-bottom: 0.4rem;
         }
 
         .hub-card.active .hub-step-tag {
@@ -808,10 +833,11 @@
         }
 
         .hub-card-title {
-            font-size: 0.92rem;
+            font-size: 1.08rem;
             font-weight: 800;
             color: var(--ucn-dark);
             margin-bottom: 0.25rem;
+            line-height: 1.25;
         }
 
         .hub-card.active .hub-card-title {
@@ -819,19 +845,84 @@
         }
 
         .hub-card-desc {
-            font-size: 0.72rem;
+            font-size: 0.82rem;
             color: var(--slate-600);
+            margin-bottom: 0.55rem;
         }
 
         .hub-card.active .hub-card-desc {
             color: var(--slate-200);
         }
 
+        .hub-card-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: var(--card-accent, var(--ucn-light-blue));
+            transition: transform 0.25s ease;
+        }
+
+        .hub-card:hover .hub-card-cta {
+            transform: translateX(4px);
+        }
+
+        .hub-card.active .hub-card-cta {
+            color: var(--ucn-gold);
+        }
+
         /* =========================================
-           CONTENEDOR DE CONTENIDO DINÁMICO (PUNTOS 2-6)
+           CONTENEDOR DE CONTENIDO DINÁMICO (OCULTO AL INICIO)
            ========================================= */
         .content-viewer {
-            padding-bottom: 5rem;
+            display: none;
+            padding-bottom: 4.5rem;
+        }
+
+        .content-viewer.open {
+            display: block;
+        }
+
+        .viewer-top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            background: var(--white);
+            padding: 0.85rem 1.25rem;
+            border-radius: 1.15rem;
+            border: 1px solid var(--slate-200);
+            box-shadow: var(--shadow-md);
+        }
+
+        .viewer-status {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--ucn-blue);
+        }
+
+        .btn-close-panel {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.55rem 1rem;
+            border-radius: 0.8rem;
+            background: var(--slate-100);
+            color: var(--slate-700);
+            font-size: 0.8rem;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .btn-close-panel:hover {
+            background: #fee2e2;
+            color: #b91c1c;
         }
 
         .tab-panel {
@@ -1515,13 +1606,13 @@
                 </div>
 
                 <div class="hero-buttons">
-                    <a href="#video-saludo" class="btn-primary-gold">
+                    <button onclick="navigateToSection('punto1', 1)" class="btn-primary-gold">
                         <i class="ph-fill ph-play-circle" style="font-size: 1.4rem;"></i>
                         <span>Ver Saludo en Video</span>
-                    </a>
+                    </button>
                     <a href="#explorar-experiencias" class="btn-glass-light">
                         <i class="ph-bold ph-sparkle" style="font-size: 1.25rem;"></i>
-                        <span>Descubrir Experiencias</span>
+                        <span>Explorar el Menú</span>
                     </a>
                 </div>
             </div>
@@ -1535,174 +1626,205 @@
         </div>
     </section>
 
-    <!-- 2. PUNTO 1: SALUDO INSTITUCIONAL EN VIDEO (DESPUÉS DEL BANNER) -->
-    <section id="video-saludo" class="video-section container">
-        <div class="video-card">
-            <div class="video-grid">
-                <div>
-                    <div class="section-pill">
-                        <span>🎬 Punto 1</span>
-                        <span>•</span>
-                        <span>Saludo a los Graduados UCN</span>
-                    </div>
-
-                    <div class="video-heading-row">
-                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Clapping%20Hands.png" 
-                             alt="Aplausos 3D"
-                             onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:3rem\'>👏</span>'">
-                        <h2 class="video-title">
-                            Un saludo especial para ti en tu día
-                        </h2>
-                    </div>
-
-                    <p class="video-description">
-                        Hoy exaltamos tu trayectoria, compromiso y el sello humano y profesional que llevas a cada lugar como graduado de la <strong>Fundación Universitaria Católica del Norte</strong>. Reproduce nuestro saludo institucional preparado especialmente para ti.
-                    </p>
-
-                    <div class="video-highlights">
-                        <div class="highlight-mini">
-                            <span class="emoji-3d" style="font-size: 2rem;">💙</span>
-                            <div>
-                                <h4>Siempre parte de la UCN</h4>
-                                <p>Nuestra comunidad celebra tus logros y acompaña tu evolución profesional.</p>
-                            </div>
-                        </div>
-                        <div class="highlight-mini">
-                            <span class="emoji-3d" style="font-size: 2rem;">🌟</span>
-                            <div>
-                                <h4>Centro Virtual del Graduado</h4>
-                                <p>Conectamos oportunidades, formación continua y redes de contacto para ti.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="hero-buttons">
-                        <a href="https://youtube.com/shorts/jS8K1rdH13U?feature=share" target="_blank" rel="noopener noreferrer" class="btn-youtube">
-                            <i class="ph-fill ph-youtube-logo" style="font-size: 1.3rem;"></i>
-                            <span>Ver en YouTube Shorts</span>
-                            <i class="ph-bold ph-arrow-square-out"></i>
-                        </a>
-                        <button onclick="celebrateGraduado()" class="btn-glass-light">
-                            <span>🎉</span>
-                            <span>¡Celebrar con confeti!</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Reproductor Vertical Shorts -->
-                <div class="phone-frame-wrapper">
-                    <div class="phone-frame">
-                        <div class="phone-screen">
-                            <iframe 
-                                src="https://www.youtube.com/embed/jS8K1rdH13U?rel=0" 
-                                title="Saludo a los graduados UCN 2026" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                                allowfullscreen>
-                            </iframe>
-                        </div>
-                        <div class="phone-footer">
-                            <span class="live-indicator">
-                                <span class="live-dot"></span> Saludo Institucional
-                            </span>
-                            <span>#GraduadosUCN2026</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 3. EXPERIENCIA INTERACTIVA DE BOTONES A LOS 6 PUNTOS (SIN DECIR TABLERO NI ESTACIÓN) -->
+    <!-- 2. MENÚ INTERACTIVO Y AMIGABLE CON LOS 6 BOTONES -->
     <section id="explorar-experiencias" class="hub-section container">
         <div class="hub-header">
             <div class="hub-badge">
                 <span>✨</span>
-                <span>Especial Día del Graduado</span>
+                <span>Menú Interactivo • Día del Graduado UCN</span>
             </div>
             <h2 class="hub-title">
-                Conecta, impulsa tu perfil y <span>disfruta tus beneficios</span>
+                ¿Qué te gustaría <span>explorar hoy?</span>
             </h2>
             <p class="hub-subtitle">
-                Elige cualquiera de las cápsulas interactivas en 3D para descubrir consejos de empleabilidad, unirte a tu comunidad, actualizar tus datos y participar en el sorteo.
+                Haz clic en cualquiera de las tarjetas interactivas para abrir el saludo institucional, los consejos de empleabilidad, tu comunidad de WhatsApp, descuentos y el sorteo.
             </p>
         </div>
 
         <div class="creative-hub-grid">
-            <!-- Punto 1 -->
-            <button onclick="scrollToVideo()" id="navBtn-1" class="hub-card interactive-card" style="--card-accent: #00A8E8; --orb-bg: #e0f2fe;">
+            <!-- Botón 1 -->
+            <button onclick="navigateToSection('punto1', 1)" id="navBtn-1" class="hub-card interactive-card" style="--card-accent: #00A8E8; --orb-bg: #e0f2fe;">
                 <div class="hub-icon-orb">
                     <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Clapper%20Board.png" 
-                         alt="Saludo" class="emoji-3d" onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:2.3rem\'>🎬</span>'">
+                         alt="Saludo" class="emoji-3d" onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:2.5rem\'>🎬</span>'">
                 </div>
-                <span class="hub-step-tag">01 • Video</span>
-                <h3 class="hub-card-title">Saludo Institucional</h3>
-                <p class="hub-card-desc">Mensaje especial UCN</p>
+                <div class="hub-card-info">
+                    <span class="hub-step-tag">Opción 01 • Video</span>
+                    <h3 class="hub-card-title">Saludo Institucional</h3>
+                    <p class="hub-card-desc">Un mensaje especial en video para celebrar tu día.</p>
+                    <span class="hub-card-cta">Ver saludo ahora <i class="ph-bold ph-arrow-right"></i></span>
+                </div>
             </button>
 
-            <!-- Punto 2 -->
-            <button onclick="navigateToSection('punto2', 2)" id="navBtn-2" class="hub-card active interactive-card" style="--card-accent: #0066CC; --orb-bg: #dbeafe;">
+            <!-- Botón 2 -->
+            <button onclick="navigateToSection('punto2', 2)" id="navBtn-2" class="hub-card interactive-card" style="--card-accent: #0066CC; --orb-bg: #dbeafe;">
                 <div class="hub-icon-orb">
                     <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Briefcase.png" 
-                         alt="Empleabilidad" class="emoji-3d" onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:2.3rem\'>💼</span>'">
+                         alt="Empleabilidad" class="emoji-3d" onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:2.5rem\'>💼</span>'">
                 </div>
-                <span class="hub-step-tag">02 • Impulso</span>
-                <h3 class="hub-card-title">Empleabilidad y Perfil</h3>
-                <p class="hub-card-desc">6 Tips + IA + Reto</p>
+                <div class="hub-card-info">
+                    <span class="hub-step-tag">Opción 02 • Impulso</span>
+                    <h3 class="hub-card-title">Empleabilidad y Perfil</h3>
+                    <p class="hub-card-desc">6 tips clave, herramientas con IA y simulador de casos.</p>
+                    <span class="hub-card-cta">Abrir herramientas <i class="ph-bold ph-arrow-right"></i></span>
+                </div>
             </button>
 
-            <!-- Punto 3 -->
-            <button onclick="navigateToSection('punto3', 3)" id="navBtn-3" class="hub-card interactive-card" style="--card-accent: #10b981; --orb-bg: #d1fae5;">
+            <!-- Botón 3 -->
+            <button onclick="navigateToSection('punto3', 3)" id="navBtn-3" class="hub-card interactive-card" style="--card-accent: #059669; --orb-bg: #d1fae5;">
                 <div class="hub-icon-orb">
                     <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Mobile%20Phone%20with%20Arrow.png" 
-                         alt="Canales" class="emoji-3d" onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:2.3rem\'>💬</span>'">
+                         alt="Canales" class="emoji-3d" onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:2.5rem\'>💬</span>'">
                 </div>
-                <span class="hub-step-tag">03 • Redes</span>
-                <h3 class="hub-card-title">Sigamos Conectados</h3>
-                <p class="hub-card-desc">WhatsApp y Redes</p>
+                <div class="hub-card-info">
+                    <span class="hub-step-tag">Opción 03 • Comunidad</span>
+                    <h3 class="hub-card-title">¡Sigamos Conectados!</h3>
+                    <p class="hub-card-desc">Grupos de WhatsApp por facultad y redes sociales UCN.</p>
+                    <span class="hub-card-cta">Unirme a los canales <i class="ph-bold ph-arrow-right"></i></span>
+                </div>
             </button>
 
-            <!-- Punto 4 -->
-            <button onclick="navigateToSection('punto4', 4)" id="navBtn-4" class="hub-card interactive-card" style="--card-accent: #8b5cf6; --orb-bg: #ede9fe;">
+            <!-- Botón 4 -->
+            <button onclick="navigateToSection('punto4', 4)" id="navBtn-4" class="hub-card interactive-card" style="--card-accent: #7c3aed; --orb-bg: #ede9fe;">
                 <div class="hub-icon-orb">
                     <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Sparkles.png" 
-                         alt="Beneficios" class="emoji-3d" onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:2.3rem\'>🎓</span>'">
+                         alt="Beneficios" class="emoji-3d" onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:2.5rem\'>🎓</span>'">
                 </div>
-                <span class="hub-step-tag">04 • Descuentos</span>
-                <h3 class="hub-card-title">Beneficios Graduado</h3>
-                <p class="hub-card-desc">Posgrados y Diplomados</p>
+                <div class="hub-card-info">
+                    <span class="hub-step-tag">Opción 04 • Descuentos</span>
+                    <h3 class="hub-card-title">Beneficios de ser Graduado</h3>
+                    <p class="hub-card-desc">20% en posgrados, 10% en diplomados y oferta virtual.</p>
+                    <span class="hub-card-cta">Conocer beneficios <i class="ph-bold ph-arrow-right"></i></span>
+                </div>
             </button>
 
-            <!-- Punto 5 -->
-            <button onclick="navigateToSection('punto5', 5)" id="navBtn-5" class="hub-card interactive-card" style="--card-accent: #f97316; --orb-bg: #ffedd5;">
+            <!-- Botón 5 -->
+            <button onclick="navigateToSection('punto5', 5)" id="navBtn-5" class="hub-card interactive-card" style="--card-accent: #ea580c; --orb-bg: #ffedd5;">
                 <div class="hub-icon-orb">
                     <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Memo.png" 
-                         alt="Actualiza tus datos" class="emoji-3d" onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:2.3rem\'>📝</span>'">
+                         alt="Actualiza tus datos" class="emoji-3d" onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:2.5rem\'>📝</span>'">
                 </div>
-                <span class="hub-step-tag">05 • ¡Sí Paga!</span>
-                <h3 class="hub-card-title">Actualiza tus Datos</h3>
-                <p class="hub-card-desc">Tu historia cuenta</p>
+                <div class="hub-card-info">
+                    <span class="hub-step-tag">Opción 05 • ¡Sí Paga!</span>
+                    <h3 class="hub-card-title">Actualiza tus Datos</h3>
+                    <p class="hub-card-desc">Tu historia e impacto profesional cuentan para la UCN.</p>
+                    <span class="hub-card-cta">Actualizar datos <i class="ph-bold ph-arrow-right"></i></span>
+                </div>
             </button>
 
-            <!-- Punto 6 -->
-            <button onclick="navigateToSection('punto6', 6)" id="navBtn-6" class="hub-card interactive-card" style="--card-accent: #FFB800; --orb-bg: #fef3c7;">
+            <!-- Botón 6 -->
+            <button onclick="navigateToSection('punto6', 6)" id="navBtn-6" class="hub-card interactive-card" style="--card-accent: #d97706; --orb-bg: #fef3c7;">
                 <div class="hub-icon-orb">
                     <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Wrapped%20Gift.png" 
-                         alt="Sorteo" class="emoji-3d" onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:2.3rem\'>🎁</span>'">
+                         alt="Sorteo" class="emoji-3d" onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:2.5rem\'>🎁</span>'">
                 </div>
-                <span class="hub-step-tag">06 • Premios</span>
-                <h3 class="hub-card-title">Encuesta y Sorteo</h3>
-                <p class="hub-card-desc">¡Participa y gana!</p>
+                <div class="hub-card-info">
+                    <span class="hub-step-tag">Opción 06 • Premios</span>
+                    <h3 class="hub-card-title">Encuesta y Sorteo</h3>
+                    <p class="hub-card-desc">Diligencia la encuesta del Día del Graduado y participa.</p>
+                    <span class="hub-card-cta">Participar y ganar <i class="ph-bold ph-arrow-right"></i></span>
+                </div>
             </button>
         </div>
     </section>
 
-    <!-- VISOR DINÁMICO DE CONTENIDOS (PUNTOS 2 AL 6) -->
+    <!-- 3. VISOR DINÁMICO DE CONTENIDOS (OCULTO HASTA DAR CLIC EN UN BOTÓN) -->
     <main id="visor-contenido" class="content-viewer container">
+
+        <div class="viewer-top-bar">
+            <div class="viewer-status">
+                <i class="ph-fill ph-sparkle" style="color: var(--ucn-amber); font-size: 1.2rem;"></i>
+                <span id="viewerCurrentLabel">Información seleccionada</span>
+            </div>
+            <button onclick="closeContentViewer()" class="btn-close-panel">
+                <i class="ph-bold ph-x"></i>
+                <span>Cerrar sección y volver al menú</span>
+            </button>
+        </div>
+
+        <!-- ==========================================
+             PUNTO 1: SALUDO INSTITUCIONAL EN VIDEO
+             ========================================== -->
+        <section id="punto1" class="tab-panel">
+            <div class="video-card">
+                <div class="video-grid">
+                    <div>
+                        <div class="section-pill">
+                            <span>🎬 Punto 1</span>
+                            <span>•</span>
+                            <span>Saludo a los Graduados UCN</span>
+                        </div>
+
+                        <div class="video-heading-row">
+                            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Clapping%20Hands.png" 
+                                 alt="Aplausos 3D"
+                                 onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:3rem\'>👏</span>'">
+                            <h2 class="video-title">
+                                Un saludo especial para ti en tu día
+                            </h2>
+                        </div>
+
+                        <p class="video-description">
+                            Hoy exaltamos tu trayectoria, compromiso y el sello humano y profesional que llevas a cada lugar como graduado de la <strong>Fundación Universitaria Católica del Norte</strong>. Reproduce nuestro saludo institucional preparado especialmente para ti.
+                        </p>
+
+                        <div class="video-highlights">
+                            <div class="highlight-mini">
+                                <span class="emoji-3d" style="font-size: 2rem;">💙</span>
+                                <div>
+                                    <h4>Siempre parte de la UCN</h4>
+                                    <p>Nuestra comunidad celebra tus logros y acompaña tu evolución profesional.</p>
+                                </div>
+                            </div>
+                            <div class="highlight-mini">
+                                <span class="emoji-3d" style="font-size: 2rem;">🌟</span>
+                                <div>
+                                    <h4>Centro Virtual del Graduado</h4>
+                                    <p>Conectamos oportunidades, formación continua y redes de contacto para ti.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hero-buttons">
+                            <a href="https://youtube.com/shorts/jS8K1rdH13U?feature=share" target="_blank" rel="noopener noreferrer" class="btn-youtube">
+                                <i class="ph-fill ph-youtube-logo" style="font-size: 1.3rem;"></i>
+                                <span>Ver en YouTube Shorts</span>
+                                <i class="ph-bold ph-arrow-square-out"></i>
+                            </a>
+                            <button onclick="celebrateGraduado()" class="btn-glass-light">
+                                <span>🎉</span>
+                                <span>¡Celebrar con confeti!</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Reproductor Vertical Shorts -->
+                    <div class="phone-frame-wrapper">
+                        <div class="phone-frame">
+                            <div class="phone-screen">
+                                <iframe 
+                                    src="https://www.youtube.com/embed/jS8K1rdH13U?rel=0" 
+                                    title="Saludo a los graduados UCN 2026" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                            <div class="phone-footer">
+                                <span class="live-indicator">
+                                    <span class="live-dot"></span> Saludo Institucional
+                                </span>
+                                <span>#GraduadosUCN2026</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- ==========================================
              PUNTO 2: EMPLEABILIDAD
              ========================================== -->
-        <section id="punto2" class="tab-panel active">
+        <section id="punto2" class="tab-panel">
             <div class="panel-card">
                 <div class="panel-banner">
                     <img src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1600" 
@@ -2332,12 +2454,20 @@
             changeSlide((currentSlide + 1) % 3);
         }, 6500);
 
-        // 2. NAVEGACIÓN ENTRE CÁPSULAS INTERACTIVAS
-        function scrollToVideo() {
-            document.getElementById('video-saludo').scrollIntoView({ behavior: 'smooth' });
-        }
+        // 2. NAVEGACIÓN DESDE EL MENÚ INTERACTIVO (OCULTO POR DEFECTO)
+        const sectionTitles = {
+            1: 'Punto 1 • Saludo a los Graduados UCN',
+            2: 'Punto 2 • Empleabilidad: fortalece tu perfil profesional',
+            3: 'Punto 3 • Canales de comunicación: ¡sigamos conectados!',
+            4: 'Punto 4 • Beneficios de ser graduado UCN',
+            5: 'Punto 5 • Actualiza tus datos: ¡sí paga!',
+            6: 'Punto 6 • Encuesta y sorteo por el Día del Graduado'
+        };
 
         function navigateToSection(sectionId, pointNum) {
+            const viewer = document.getElementById('visor-contenido');
+            viewer.classList.add('open');
+
             document.querySelectorAll('.tab-panel').forEach(panel => {
                 panel.classList.remove('active');
             });
@@ -2345,15 +2475,39 @@
             const target = document.getElementById(sectionId);
             if (target) {
                 target.classList.add('active');
-                document.getElementById('visor-contenido').scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
 
-            for (let i = 2; i <= 6; i++) {
+            const label = document.getElementById('viewerCurrentLabel');
+            if (label && sectionTitles[pointNum]) {
+                label.textContent = sectionTitles[pointNum];
+            }
+
+            for (let i = 1; i <= 6; i++) {
                 const btn = document.getElementById(`navBtn-${i}`);
                 if (btn) {
                     btn.classList.toggle('active', i === pointNum);
                 }
             }
+
+            setTimeout(() => {
+                viewer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 60);
+        }
+
+        function closeContentViewer() {
+            const viewer = document.getElementById('visor-contenido');
+            viewer.classList.remove('open');
+
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+
+            for (let i = 1; i <= 6; i++) {
+                const btn = document.getElementById(`navBtn-${i}`);
+                if (btn) btn.classList.remove('active');
+            }
+
+            document.getElementById('explorar-experiencias').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         // 3. SIMULADOR INTERACTIVO "¿QUÉ HARÍAS EN ESTA SITUACIÓN?"
