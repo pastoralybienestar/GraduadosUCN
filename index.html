@@ -1693,7 +1693,7 @@
                 <div class="hub-card-info">
                     <span class="hub-step-tag">Opción 04 • Descuentos</span>
                     <h3 class="hub-card-title">Beneficios de ser Graduado</h3>
-                    <p class="hub-card-desc">20% en posgrados, 10% en diplomados y oferta virtual.</p>
+                    <p class="hub-card-desc">20% en posgrados propios, 10% en diplomados y oferta virtual.</p>
                     <span class="hub-card-cta">Conocer beneficios <i class="ph-bold ph-arrow-right"></i></span>
                 </div>
             </button>
@@ -2126,6 +2126,62 @@
                             </a>
                         </div>
                     </div>
+
+                    <div style="margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--slate-200);">
+                        <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--ucn-amber);">3.3 Atención, consultas y trámites</span>
+                        <h4 style="font-size: 1.5rem; color: var(--ucn-dark); margin: 0.25rem 0 0.4rem;">Correo institucional y solicitudes de trámite</h4>
+                        <p style="font-size: 0.92rem; color: var(--slate-600); margin-bottom: 1.5rem;">
+                            Comunícate directamente con nuestra oficina de graduados o registra tus solicitudes a través de los canales oficiales de atención.
+                        </p>
+
+                        <div class="two-col-grid">
+                            <!-- Tarjeta de Correo Electrónico -->
+                            <div class="tip-card interactive-card" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-color: #7dd3fc;">
+                                <div>
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.85rem;">
+                                        <span class="tip-badge" style="background: var(--ucn-light-blue);">Correo Oficial</span>
+                                        <span class="emoji-3d" style="font-size: 2.4rem;">✉️</span>
+                                    </div>
+                                    <h5 style="font-size: 1.25rem; font-weight: 800; color: var(--ucn-dark); margin-bottom: 0.35rem; word-break: break-all;">
+                                        graduados@ucn.edu.co
+                                    </h5>
+                                    <p style="font-size: 0.88rem; color: var(--slate-600); margin-bottom: 1.25rem;">
+                                        Escríbenos para orientación, actividades del Centro Virtual del Graduado o acompañamiento institucional.
+                                    </p>
+                                </div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.6rem;">
+                                    <a href="mailto:graduados@ucn.edu.co" class="btn-tip-action" style="flex: 1; background: var(--ucn-blue); color: var(--white);">
+                                        <i class="ph-bold ph-paper-plane-tilt"></i>
+                                        <span>Enviar correo</span>
+                                    </a>
+                                    <button type="button" onclick="copyGraduadosEmail()" id="copyEmailBtn" class="btn-tip-action" style="flex: 1; background: var(--white);">
+                                        <i class="ph-bold ph-copy"></i>
+                                        <span>Copiar correo</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta de Buzón de Solicitudes y Trámites -->
+                            <div class="tip-card interactive-card" style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-color: #fcd34d;">
+                                <div>
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.85rem;">
+                                        <span class="tip-badge" style="background: var(--ucn-gold); color: var(--ucn-dark);">Trámites y Solicitudes</span>
+                                        <span class="emoji-3d" style="font-size: 2.4rem;">📬</span>
+                                    </div>
+                                    <h5 style="font-size: 1.2rem; font-weight: 800; color: var(--ucn-dark); margin-bottom: 0.35rem;">
+                                        Buzón de Solicitudes UCN
+                                    </h5>
+                                    <p style="font-size: 0.92rem; color: var(--slate-700); font-weight: 600; margin-bottom: 1.25rem;">
+                                        Todas tus solicitudes de trámite puedes registrarlas a través del buzón.
+                                    </p>
+                                </div>
+                                <a href="https://www.ucn.edu.co/el-buzon/" target="_blank" rel="noopener noreferrer" class="btn-primary-gold" style="width: 100%; justify-content: center; padding: 0.8rem 1rem; font-size: 0.85rem;">
+                                    <span>Ir al Buzón UCN</span>
+                                    <i class="ph-bold ph-arrow-square-out"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -2163,9 +2219,9 @@
                             <div class="discount-card discount-blue interactive-card">
                                 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                                     <div>
-                                        <span class="section-pill" style="margin-bottom: 0;">Posgrados UCN</span>
+                                        <span class="section-pill" style="margin-bottom: 0;">Posgrados Propios UCN</span>
                                         <div class="discount-number">20 %</div>
-                                        <h5 style="font-size: 1.35rem; font-weight: 800;">De descuento en programas de posgrado</h5>
+                                        <h5 style="font-size: 1.35rem; font-weight: 800;">De descuento en programas de posgrados propios</h5>
                                     </div>
                                     <span class="emoji-3d" style="font-size: 3.5rem;">🏅</span>
                                 </div>
@@ -2685,6 +2741,29 @@
 
         function closeTipModal() {
             document.getElementById('tipModal').classList.remove('open');
+        }
+
+        function copyGraduadosEmail() {
+            const email = 'graduados@ucn.edu.co';
+            const tempInput = document.createElement('textarea');
+            tempInput.value = email;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            const btn = document.getElementById('copyEmailBtn');
+            if (btn) {
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="ph-bold ph-check"></i><span>¡Correo copiado!</span>';
+                btn.style.background = '#059669';
+                btn.style.color = '#ffffff';
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.style.background = '#ffffff';
+                    btn.style.color = 'var(--ucn-blue)';
+                }, 2200);
+            }
         }
 
         function celebrateGraduado() {
