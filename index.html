@@ -1,0 +1,2552 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Día del Graduado UCN 2026 | Experiencia Interactiva</title>
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* =========================================
+           VARIABLES Y RESET (CSS NATIVO PURO)
+           ========================================= */
+        :root {
+            --ucn-blue: #003876;
+            --ucn-light-blue: #0066CC;
+            --ucn-cyan: #00A8E8;
+            --ucn-gold: #FFB800;
+            --ucn-amber: #F59E0B;
+            --ucn-dark: #0A192F;
+            --slate-50: #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-300: #cbd5e1;
+            --slate-600: #475569;
+            --slate-700: #334155;
+            --slate-800: #1e293b;
+            --emerald-50: #ecfdf5;
+            --emerald-500: #10b981;
+            --emerald-600: #059669;
+            --emerald-700: #047857;
+            --white: #ffffff;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+            --radius-2xl: 2rem;
+            --shadow-md: 0 10px 25px -5px rgba(0, 56, 118, 0.1), 0 8px 10px -6px rgba(0, 56, 118, 0.05);
+            --shadow-xl: 0 20px 35px -10px rgba(10, 25, 47, 0.18), 0 10px 15px -5px rgba(10, 25, 47, 0.08);
+            --shadow-glow: 0 12px 30px -4px rgba(255, 184, 0, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--slate-50);
+            background-image: 
+                radial-gradient(at 10% 10%, rgba(0, 168, 232, 0.07) 0px, transparent 50%),
+                radial-gradient(at 90% 40%, rgba(255, 184, 0, 0.07) 0px, transparent 50%);
+            color: var(--slate-800);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+        }
+
+        /* =========================================
+           EMOJIS 3D Y ANIMACIONES
+           ========================================= */
+        .emoji-3d {
+            display: inline-block;
+            filter: drop-shadow(0 10px 12px rgba(0, 56, 118, 0.25)) drop-shadow(0 3px 4px rgba(0, 0, 0, 0.15));
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease;
+            user-select: none;
+        }
+
+        .emoji-3d:hover,
+        .interactive-card:hover .emoji-3d {
+            transform: translateY(-7px) scale(1.15) rotate(6deg);
+            filter: drop-shadow(0 16px 20px rgba(0, 102, 204, 0.35));
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+
+        @keyframes pulsePing {
+            75%, 100% { transform: scale(2); opacity: 0; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-float {
+            animation: floatSlow 4.5s ease-in-out infinite;
+        }
+
+        .animate-float-delayed {
+            animation: floatSlow 5.5s ease-in-out 1.5s infinite;
+        }
+
+        /* =========================================
+           CABECERA FIJA (SIN RECORRIDO UCN)
+           ========================================= */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 4px 20px rgba(0, 56, 118, 0.05);
+        }
+
+        .header-inner {
+            height: 5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .brand-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 1rem;
+            background: linear-gradient(135deg, var(--ucn-blue), var(--ucn-cyan));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 18px rgba(0, 56, 118, 0.25);
+            transition: transform 0.3s ease;
+        }
+
+        .brand-logo:hover .brand-icon {
+            transform: scale(1.06) rotate(-3deg);
+        }
+
+        .brand-icon img {
+            width: 2rem;
+            height: 2rem;
+            object-fit: contain;
+        }
+
+        .brand-subtitle {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--ucn-light-blue);
+            display: block;
+        }
+
+        .brand-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--ucn-dark);
+        }
+
+        .brand-title span {
+            color: var(--ucn-amber);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-raffle-top {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.15rem;
+            border-radius: 0.9rem;
+            background: linear-gradient(135deg, var(--ucn-gold), var(--ucn-amber));
+            color: var(--ucn-dark);
+            font-weight: 800;
+            font-size: 0.85rem;
+            box-shadow: var(--shadow-glow);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .btn-raffle-top:hover {
+            transform: translateY(-2px) scale(1.03);
+        }
+
+        .ping-dot {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 11px;
+            height: 11px;
+        }
+
+        .ping-dot::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background-color: #ef4444;
+            animation: pulsePing 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+        .ping-dot::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background-color: #dc2626;
+        }
+
+        /* =========================================
+           1. BANNER PRINCIPAL CON CARRUSEL PEXELS
+           ========================================= */
+        .hero-section {
+            padding-top: 1.5rem;
+            padding-bottom: 2.5rem;
+        }
+
+        .hero-wrapper {
+            position: relative;
+            border-radius: var(--radius-2xl);
+            overflow: hidden;
+            min-height: 540px;
+            background-color: var(--ucn-dark);
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-slides {
+            position: absolute;
+            inset: 0;
+        }
+
+        .hero-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            pointer-events: none;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .hero-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(10, 25, 47, 0.96) 0%, rgba(0, 56, 118, 0.84) 55%, rgba(10, 25, 47, 0.35) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            padding: 3rem 2rem;
+            max-width: 740px;
+            color: var(--white);
+        }
+
+        @media (min-width: 768px) {
+            .hero-content {
+                padding: 4rem 3.5rem;
+            }
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.45rem 1rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--ucn-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 1.25rem;
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 4.2vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .text-gradient-gold {
+            background: linear-gradient(90deg, var(--ucn-gold), #fde047);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-message-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-left: 4px solid var(--ucn-gold);
+            padding: 1rem 1.25rem;
+            border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+            margin-bottom: 1.75rem;
+            font-size: 1.02rem;
+            color: #f1f5f9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .btn-primary-gold {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.95rem 1.6rem;
+            border-radius: 1rem;
+            background: var(--ucn-gold);
+            color: var(--ucn-dark);
+            font-weight: 800;
+            font-size: 0.95rem;
+            box-shadow: var(--shadow-glow);
+            transition: all 0.25s ease;
+        }
+
+        .btn-primary-gold:hover {
+            background: #ffc933;
+            transform: translateY(-2px);
+        }
+
+        .btn-glass-light {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.95rem 1.6rem;
+            border-radius: 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--white);
+            font-weight: 700;
+            font-size: 0.95rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.25s ease;
+        }
+
+        .btn-glass-light:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Tarjetas 3D Flotantes en el Banner */
+        .hero-floating-card {
+            display: none;
+            position: absolute;
+            z-index: 15;
+            background: rgba(10, 25, 47, 0.8);
+            backdrop-filter: blur(16px);
+            padding: 1rem 1.25rem;
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: var(--shadow-xl);
+            align-items: center;
+            gap: 0.85rem;
+            color: var(--white);
+        }
+
+        @media (min-width: 1024px) {
+            .hero-floating-card {
+                display: flex;
+            }
+        }
+
+        .hero-floating-top {
+            top: 3rem;
+            right: 3.5rem;
+        }
+
+        .hero-floating-bottom {
+            bottom: 4.5rem;
+            right: 5rem;
+        }
+
+        .hero-floating-card img {
+            width: 3.2rem;
+            height: 3.2rem;
+        }
+
+        .floating-tag {
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--ucn-gold);
+        }
+
+        .floating-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .hero-dots {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 2rem;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .hero-dots {
+                left: 3.5rem;
+            }
+        }
+
+        .slide-dot {
+            height: 0.6rem;
+            width: 0.6rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.45);
+            transition: all 0.3s ease;
+        }
+
+        .slide-dot.active {
+            width: 2.2rem;
+            background: var(--ucn-gold);
+        }
+
+        /* =========================================
+           2. PUNTO 1: SALUDO INSTITUCIONAL EN VIDEO
+           ========================================= */
+        .video-section {
+            padding: 1.5rem 0 2.5rem;
+        }
+
+        .video-card {
+            background: linear-gradient(135deg, var(--ucn-blue) 0%, var(--ucn-dark) 60%, #0f172a 100%);
+            border-radius: var(--radius-2xl);
+            padding: 2rem 1.5rem;
+            color: var(--white);
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .video-card {
+                padding: 3rem;
+            }
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        @media (min-width: 992px) {
+            .video-grid {
+                grid-template-columns: 7fr 5fr;
+            }
+        }
+
+        .section-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.9rem;
+            border-radius: 0.75rem;
+            background: rgba(255, 184, 0, 0.18);
+            border: 1px solid rgba(255, 184, 0, 0.4);
+            color: var(--ucn-gold);
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 1rem;
+        }
+
+        .video-heading-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .video-heading-row img {
+            width: 3.5rem;
+            height: 3.5rem;
+            object-fit: contain;
+        }
+
+        .video-title {
+            font-size: clamp(1.6rem, 3vw, 2.4rem);
+            font-weight: 800;
+        }
+
+        .video-description {
+            color: var(--slate-200);
+            font-size: 1.05rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .video-highlights {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 1.75rem;
+        }
+
+        @media (min-width: 640px) {
+            .video-highlights {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .highlight-mini {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: var(--radius-lg);
+            padding: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .highlight-mini h4 {
+            font-size: 0.92rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .highlight-mini p {
+            font-size: 0.8rem;
+            color: var(--slate-300);
+        }
+
+        .btn-youtube {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.85rem 1.35rem;
+            border-radius: 0.9rem;
+            background: #dc2626;
+            color: var(--white);
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .btn-youtube:hover {
+            background: #ef4444;
+            transform: translateY(-2px);
+        }
+
+        .phone-frame-wrapper {
+            display: flex;
+            justify-content: center;
+        }
+
+        .phone-frame {
+            width: 100%;
+            max-width: 300px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.05));
+            padding: 0.85rem;
+            border-radius: 2.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .phone-screen {
+            width: 100%;
+            aspect-ratio: 9 / 16;
+            border-radius: 1.6rem;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .phone-screen iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .phone-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.65rem 0.5rem 0.1rem;
+            font-size: 0.75rem;
+            color: var(--slate-300);
+        }
+
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--ucn-gold);
+            font-weight: 700;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4ade80;
+        }
+
+        /* =========================================
+           3. HUB CREATIVO DE NAVEGACIÓN (SIN "TABLERO/ESTACIÓN")
+           ========================================= */
+        .hub-section {
+            padding: 2.5rem 0 2rem;
+        }
+
+        .hub-header {
+            text-align: center;
+            max-width: 720px;
+            margin: 0 auto 2.25rem;
+        }
+
+        .hub-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.35rem 1rem;
+            border-radius: 999px;
+            background: rgba(0, 102, 204, 0.1);
+            color: var(--ucn-light-blue);
+            font-weight: 800;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.65rem;
+        }
+
+        .hub-title {
+            font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+            color: var(--ucn-dark);
+            font-weight: 800;
+        }
+
+        .hub-title span {
+            color: var(--ucn-light-blue);
+        }
+
+        .hub-subtitle {
+            color: var(--slate-600);
+            font-size: 0.98rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Grid Creativo Tipo Bento / Cápsulas Flotantes 3D */
+        .creative-hub-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .creative-hub-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.25rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .creative-hub-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+
+        .hub-card {
+            position: relative;
+            background: var(--white);
+            border-radius: 1.75rem;
+            padding: 1.4rem 1rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border: 2px solid rgba(0, 56, 118, 0.08);
+            box-shadow: var(--shadow-md);
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+        }
+
+        .hub-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--card-accent, var(--ucn-light-blue));
+            opacity: 0.85;
+            transition: height 0.3s ease;
+        }
+
+        .hub-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--card-accent, var(--ucn-light-blue));
+        }
+
+        .hub-card.active {
+            background: linear-gradient(155deg, var(--ucn-blue) 0%, var(--ucn-dark) 100%);
+            color: var(--white);
+            border-color: var(--ucn-gold);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px -10px rgba(0, 56, 118, 0.45);
+        }
+
+        .hub-card.active::before {
+            height: 6px;
+            background: var(--ucn-gold);
+        }
+
+        .hub-icon-orb {
+            width: 4.4rem;
+            height: 4.4rem;
+            border-radius: 1.4rem;
+            background: var(--orb-bg, #eff6ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.85rem;
+            transition: transform 0.35s ease, background 0.35s ease;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .hub-card.active .hub-icon-orb {
+            background: rgba(255, 255, 255, 0.16);
+        }
+
+        .hub-card:hover .hub-icon-orb {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .hub-icon-orb img {
+            width: 2.8rem;
+            height: 2.8rem;
+            object-fit: contain;
+        }
+
+        .hub-step-tag {
+            font-size: 0.68rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.2rem 0.65rem;
+            border-radius: 999px;
+            background: rgba(0, 102, 204, 0.09);
+            color: var(--ucn-light-blue);
+            margin-bottom: 0.45rem;
+        }
+
+        .hub-card.active .hub-step-tag {
+            background: rgba(255, 184, 0, 0.22);
+            color: var(--ucn-gold);
+        }
+
+        .hub-card-title {
+            font-size: 0.92rem;
+            font-weight: 800;
+            color: var(--ucn-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .hub-card.active .hub-card-title {
+            color: var(--white);
+        }
+
+        .hub-card-desc {
+            font-size: 0.72rem;
+            color: var(--slate-600);
+        }
+
+        .hub-card.active .hub-card-desc {
+            color: var(--slate-200);
+        }
+
+        /* =========================================
+           CONTENEDOR DE CONTENIDO DINÁMICO (PUNTOS 2-6)
+           ========================================= */
+        .content-viewer {
+            padding-bottom: 5rem;
+        }
+
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.45s ease-out forwards;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        .panel-card {
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--slate-200);
+            overflow: hidden;
+        }
+
+        /* Cabecera de cada Punto con Foto Pexels */
+        .panel-banner {
+            position: relative;
+            min-height: 230px;
+            background: var(--ucn-dark);
+            display: flex;
+            align-items: flex-end;
+            padding: 2rem 1.5rem;
+            overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .panel-banner {
+                min-height: 250px;
+                padding: 2.5rem 3rem;
+            }
+        }
+
+        .panel-banner-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.38;
+        }
+
+        .panel-banner-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, var(--ucn-dark) 5%, rgba(10, 25, 47, 0.65) 60%, transparent 100%);
+        }
+
+        .panel-banner-content {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.25rem;
+        }
+
+        .panel-banner-left {
+            display: flex;
+            align-items: center;
+            gap: 1.15rem;
+        }
+
+        .panel-banner-emoji {
+            font-size: 3.4rem;
+        }
+
+        .panel-banner-kicker {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--ucn-gold);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .panel-banner-title {
+            font-size: clamp(1.5rem, 3vw, 2.25rem);
+            color: var(--white);
+            font-weight: 800;
+        }
+
+        .panel-body {
+            padding: 2rem 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .panel-body {
+                padding: 2.75rem 3rem;
+            }
+        }
+
+        /* =========================================
+           PUNTO 2: EMPLEABILIDAD + SIMULADOR
+           ========================================= */
+        .tips-intro {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--slate-600);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (min-width: 768px) {
+            .tips-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .tips-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .tip-card {
+            background: var(--slate-50);
+            border: 1px solid var(--slate-200);
+            border-radius: 1.4rem;
+            padding: 1.6rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        .tip-card:hover {
+            background: #f0f7ff;
+            border-color: var(--ucn-light-blue);
+            box-shadow: var(--shadow-md);
+        }
+
+        .tip-card.highlight {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border: 2px solid var(--ucn-gold);
+        }
+
+        .tip-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .tip-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            background: var(--ucn-blue);
+            color: var(--white);
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .tip-card.highlight .tip-badge {
+            background: var(--ucn-gold);
+            color: var(--ucn-dark);
+            font-weight: 800;
+        }
+
+        .tip-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--ucn-dark);
+            margin-bottom: 0.85rem;
+        }
+
+        .tip-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+            font-size: 0.88rem;
+            color: var(--slate-600);
+            margin-bottom: 1.4rem;
+        }
+
+        .tip-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .tip-list i {
+            color: var(--ucn-light-blue);
+            font-size: 1.1rem;
+            margin-top: 0.15rem;
+            flex-shrink: 0;
+        }
+
+        .btn-tip-action {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 0.85rem;
+            background: var(--white);
+            color: var(--ucn-blue);
+            border: 1px solid rgba(0, 56, 118, 0.2);
+            font-weight: 700;
+            font-size: 0.82rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            transition: all 0.25s ease;
+        }
+
+        .btn-tip-action:hover {
+            background: var(--ucn-blue);
+            color: var(--white);
+        }
+
+        /* Simulador de Casos (Punto 2.5) */
+        .simulator-box {
+            background: linear-gradient(135deg, var(--ucn-dark) 0%, var(--ucn-blue) 100%);
+            border-radius: var(--radius-2xl);
+            padding: 2rem 1.5rem;
+            color: var(--white);
+            box-shadow: var(--shadow-xl);
+        }
+
+        @media (min-width: 768px) {
+            .simulator-box {
+                padding: 2.5rem;
+            }
+        }
+
+        .simulator-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            margin-bottom: 1.75rem;
+        }
+
+        .scen-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .scen-btn {
+            padding: 0.55rem 1rem;
+            border-radius: 0.75rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--white);
+            transition: all 0.2s ease;
+        }
+
+        .scen-btn.active {
+            background: var(--ucn-gold);
+            color: var(--ucn-dark);
+        }
+
+        .simulator-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.75rem;
+            align-items: center;
+        }
+
+        @media (min-width: 992px) {
+            .simulator-grid {
+                grid-template-columns: 7fr 5fr;
+            }
+        }
+
+        .question-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 1.25rem;
+            padding: 1.35rem;
+            margin-bottom: 1rem;
+        }
+
+        .options-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option-btn {
+            width: 100%;
+            text-align: left;
+            padding: 1rem 1.15rem;
+            border-radius: 1rem;
+            background: rgba(255, 255, 255, 0.09);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .option-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(4px);
+        }
+
+        .option-num {
+            width: 1.65rem;
+            height: 1.65rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .feedback-panel {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1.4rem;
+            padding: 1.75rem;
+            min-height: 230px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .feedback-panel.correct {
+            background: rgba(16, 185, 129, 0.22);
+            border-color: #34d399;
+        }
+
+        .feedback-panel.warning {
+            background: rgba(245, 158, 11, 0.22);
+            border-color: #fbbf24;
+        }
+
+        /* =========================================
+           PUNTO 3: WHATSAPP Y REDES SOCIALES
+           ========================================= */
+        .two-col-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+        }
+
+        @media (min-width: 768px) {
+            .two-col-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .wa-card {
+            background: linear-gradient(135deg, var(--emerald-50), #f0fdfa);
+            border: 2px solid #a7f3d0;
+            border-radius: 1.35rem;
+            padding: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            transition: all 0.25s ease;
+        }
+
+        .wa-card:hover {
+            border-color: var(--emerald-500);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .wa-card-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .wa-tag {
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--emerald-700);
+        }
+
+        .wa-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--ucn-dark);
+            margin: 0.15rem 0 0.3rem;
+        }
+
+        .wa-cta {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--emerald-700);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .wa-arrow {
+            width: 2.6rem;
+            height: 2.6rem;
+            border-radius: 0.85rem;
+            background: var(--emerald-600);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .social-banner-card {
+            border-radius: 1.5rem;
+            padding: 1.6rem;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.25s ease;
+        }
+
+        .social-banner-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .bg-facebook {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+        }
+
+        .bg-instagram {
+            background: linear-gradient(135deg, #db2777, #7e22ce, #f59e0b);
+        }
+
+        /* =========================================
+           PUNTO 4, 5 Y 6: BENEFICIOS, DATOS Y SORTEO
+           ========================================= */
+        .discount-card {
+            border-radius: 1.6rem;
+            padding: 2rem;
+            color: var(--white);
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .discount-blue {
+            background: linear-gradient(135deg, var(--ucn-blue), var(--ucn-dark));
+        }
+
+        .discount-cyan {
+            background: linear-gradient(135deg, var(--ucn-light-blue), #0e7490);
+        }
+
+        .discount-number {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(3.2rem, 5vw, 4.5rem);
+            font-weight: 800;
+            color: var(--ucn-gold);
+            line-height: 1;
+            margin: 0.75rem 0 0.5rem;
+        }
+
+        .four-col-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+        }
+
+        @media (min-width: 640px) {
+            .four-col-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .four-col-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .reason-card {
+            background: var(--slate-50);
+            border: 1px solid var(--slate-200);
+            border-radius: 1.35rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .cta-strip {
+            background: linear-gradient(90deg, var(--ucn-blue), var(--ucn-light-blue));
+            border-radius: 1.6rem;
+            padding: 2rem;
+            color: var(--white);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        /* Modal */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(10, 25, 47, 0.75);
+            backdrop-filter: blur(6px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .modal-box {
+            background: var(--white);
+            border-radius: 1.75rem;
+            max-width: 520px;
+            width: 100%;
+            padding: 2rem;
+            position: relative;
+            box-shadow: var(--shadow-xl);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            width: 2.4rem;
+            height: 2.4rem;
+            border-radius: 50%;
+            background: var(--slate-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Footer */
+        .site-footer {
+            background: var(--ucn-dark);
+            color: var(--white);
+            padding: 3rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-inner {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            font-size: 0.82rem;
+            color: var(--slate-300);
+        }
+
+        .footer-links a:hover {
+            color: var(--ucn-gold);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CABECERA SUPERIOR FIJA (SIN RECORRIDO UCN) -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="#inicio" class="brand-logo">
+                <div class="brand-icon">
+                    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Graduation%20Cap.png" 
+                         alt="Graduados UCN"
+                         onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:1.7rem\'>🎓</span>'">
+                </div>
+                <div>
+                    <span class="brand-subtitle">Católica del Norte</span>
+                    <h1 class="brand-title">Graduados UCN <span>2026</span></h1>
+                </div>
+            </a>
+
+            <div class="header-actions">
+                <button onclick="navigateToSection('punto6', 6)" class="btn-raffle-top">
+                    <span>🎁</span>
+                    <span>Sorteo Día del Graduado</span>
+                    <span class="ping-dot"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 1. BANNER INICIAL CON IMÁGENES DE PEXELS Y EL MENSAJE ESPECIAL -->
+    <section id="inicio" class="hero-section container">
+        <div class="hero-wrapper">
+            <!-- Fotografías de Pexels -->
+            <div class="hero-slides">
+                <div class="hero-slide active">
+                    <img src="https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg?auto=compress&cs=tinysrgb&w=1600" 
+                         alt="Graduados UCN Celebración"
+                         onerror="this.src='https://placehold.co/1600x900/003876/FFFFFF?text=Graduados+UCN+2026'">
+                    <div class="hero-overlay"></div>
+                </div>
+                <div class="hero-slide">
+                    <img src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1600" 
+                         alt="Comunidad y Empleabilidad UCN"
+                         onerror="this.src='https://placehold.co/1600x900/0066CC/FFFFFF?text=Comunidad+UCN'">
+                    <div class="hero-overlay"></div>
+                </div>
+                <div class="hero-slide">
+                    <img src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1600" 
+                         alt="Crecimiento Profesional UCN"
+                         onerror="this.src='https://placehold.co/1600x900/0A192F/FFB800?text=Futuro+UCN'">
+                    <div class="hero-overlay"></div>
+                </div>
+            </div>
+
+            <!-- Insignias 3D Flotantes -->
+            <div class="hero-floating-card hero-floating-top animate-float">
+                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Trophy.png" 
+                     alt="Trofeo 3D" onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:2.4rem\'>🏆</span>'">
+                <div>
+                    <p class="floating-tag">Orgullo UCN</p>
+                    <p class="floating-title">¡Tu historia nos inspira!</p>
+                </div>
+            </div>
+
+            <div class="hero-floating-card hero-floating-bottom animate-float-delayed">
+                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Rocket.png" 
+                     alt="Cohete 3D" onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:2.4rem\'>🚀</span>'">
+                <div>
+                    <p class="floating-tag" style="color:#67e8f9;">Comunidad Activa</p>
+                    <p class="floating-title">Empleabilidad + Beneficios</p>
+                </div>
+            </div>
+
+            <!-- Mensaje Principal del Banner -->
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span>✨</span>
+                    <span>Día del Graduado UCN 2026</span>
+                </div>
+
+                <h2 id="bannerTitle" class="hero-title">
+                    ¡Celebremos juntos el orgullo de ser <span class="text-gradient-gold">graduados UCN!</span>
+                </h2>
+
+                <div class="hero-message-card">
+                    <p id="bannerSubtitle">
+                        “Tu historia nos inspira y nos recuerda que, una vez parte de la Católica del Norte, siempre tendrás un lugar en nuestra comunidad.”
+                    </p>
+                </div>
+
+                <div class="hero-buttons">
+                    <a href="#video-saludo" class="btn-primary-gold">
+                        <i class="ph-fill ph-play-circle" style="font-size: 1.4rem;"></i>
+                        <span>Ver Saludo en Video</span>
+                    </a>
+                    <a href="#explorar-experiencias" class="btn-glass-light">
+                        <i class="ph-bold ph-sparkle" style="font-size: 1.25rem;"></i>
+                        <span>Descubrir Experiencias</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Indicadores del Carrusel Pexels -->
+            <div class="hero-dots">
+                <button onclick="changeSlide(0)" class="slide-dot active" aria-label="Imagen 1"></button>
+                <button onclick="changeSlide(1)" class="slide-dot" aria-label="Imagen 2"></button>
+                <button onclick="changeSlide(2)" class="slide-dot" aria-label="Imagen 3"></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. PUNTO 1: SALUDO INSTITUCIONAL EN VIDEO (DESPUÉS DEL BANNER) -->
+    <section id="video-saludo" class="video-section container">
+        <div class="video-card">
+            <div class="video-grid">
+                <div>
+                    <div class="section-pill">
+                        <span>🎬 Punto 1</span>
+                        <span>•</span>
+                        <span>Saludo a los Graduados UCN</span>
+                    </div>
+
+                    <div class="video-heading-row">
+                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Clapping%20Hands.png" 
+                             alt="Aplausos 3D"
+                             onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:3rem\'>👏</span>'">
+                        <h2 class="video-title">
+                            Un saludo especial para ti en tu día
+                        </h2>
+                    </div>
+
+                    <p class="video-description">
+                        Hoy exaltamos tu trayectoria, compromiso y el sello humano y profesional que llevas a cada lugar como graduado de la <strong>Fundación Universitaria Católica del Norte</strong>. Reproduce nuestro saludo institucional preparado especialmente para ti.
+                    </p>
+
+                    <div class="video-highlights">
+                        <div class="highlight-mini">
+                            <span class="emoji-3d" style="font-size: 2rem;">💙</span>
+                            <div>
+                                <h4>Siempre parte de la UCN</h4>
+                                <p>Nuestra comunidad celebra tus logros y acompaña tu evolución profesional.</p>
+                            </div>
+                        </div>
+                        <div class="highlight-mini">
+                            <span class="emoji-3d" style="font-size: 2rem;">🌟</span>
+                            <div>
+                                <h4>Centro Virtual del Graduado</h4>
+                                <p>Conectamos oportunidades, formación continua y redes de contacto para ti.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hero-buttons">
+                        <a href="https://youtube.com/shorts/jS8K1rdH13U?feature=share" target="_blank" rel="noopener noreferrer" class="btn-youtube">
+                            <i class="ph-fill ph-youtube-logo" style="font-size: 1.3rem;"></i>
+                            <span>Ver en YouTube Shorts</span>
+                            <i class="ph-bold ph-arrow-square-out"></i>
+                        </a>
+                        <button onclick="celebrateGraduado()" class="btn-glass-light">
+                            <span>🎉</span>
+                            <span>¡Celebrar con confeti!</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Reproductor Vertical Shorts -->
+                <div class="phone-frame-wrapper">
+                    <div class="phone-frame">
+                        <div class="phone-screen">
+                            <iframe 
+                                src="https://www.youtube.com/embed/jS8K1rdH13U?rel=0" 
+                                title="Saludo a los graduados UCN 2026" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="phone-footer">
+                            <span class="live-indicator">
+                                <span class="live-dot"></span> Saludo Institucional
+                            </span>
+                            <span>#GraduadosUCN2026</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. EXPERIENCIA INTERACTIVA DE BOTONES A LOS 6 PUNTOS (SIN DECIR TABLERO NI ESTACIÓN) -->
+    <section id="explorar-experiencias" class="hub-section container">
+        <div class="hub-header">
+            <div class="hub-badge">
+                <span>✨</span>
+                <span>Especial Día del Graduado</span>
+            </div>
+            <h2 class="hub-title">
+                Conecta, impulsa tu perfil y <span>disfruta tus beneficios</span>
+            </h2>
+            <p class="hub-subtitle">
+                Elige cualquiera de las cápsulas interactivas en 3D para descubrir consejos de empleabilidad, unirte a tu comunidad, actualizar tus datos y participar en el sorteo.
+            </p>
+        </div>
+
+        <div class="creative-hub-grid">
+            <!-- Punto 1 -->
+            <button onclick="scrollToVideo()" id="navBtn-1" class="hub-card interactive-card" style="--card-accent: #00A8E8; --orb-bg: #e0f2fe;">
+                <div class="hub-icon-orb">
+                    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Clapper%20Board.png" 
+                         alt="Saludo" class="emoji-3d" onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:2.3rem\'>🎬</span>'">
+                </div>
+                <span class="hub-step-tag">01 • Video</span>
+                <h3 class="hub-card-title">Saludo Institucional</h3>
+                <p class="hub-card-desc">Mensaje especial UCN</p>
+            </button>
+
+            <!-- Punto 2 -->
+            <button onclick="navigateToSection('punto2', 2)" id="navBtn-2" class="hub-card active interactive-card" style="--card-accent: #0066CC; --orb-bg: #dbeafe;">
+                <div class="hub-icon-orb">
+                    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Briefcase.png" 
+                         alt="Empleabilidad" class="emoji-3d" onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:2.3rem\'>💼</span>'">
+                </div>
+                <span class="hub-step-tag">02 • Impulso</span>
+                <h3 class="hub-card-title">Empleabilidad y Perfil</h3>
+                <p class="hub-card-desc">6 Tips + IA + Reto</p>
+            </button>
+
+            <!-- Punto 3 -->
+            <button onclick="navigateToSection('punto3', 3)" id="navBtn-3" class="hub-card interactive-card" style="--card-accent: #10b981; --orb-bg: #d1fae5;">
+                <div class="hub-icon-orb">
+                    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Mobile%20Phone%20with%20Arrow.png" 
+                         alt="Canales" class="emoji-3d" onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:2.3rem\'>💬</span>'">
+                </div>
+                <span class="hub-step-tag">03 • Redes</span>
+                <h3 class="hub-card-title">Sigamos Conectados</h3>
+                <p class="hub-card-desc">WhatsApp y Redes</p>
+            </button>
+
+            <!-- Punto 4 -->
+            <button onclick="navigateToSection('punto4', 4)" id="navBtn-4" class="hub-card interactive-card" style="--card-accent: #8b5cf6; --orb-bg: #ede9fe;">
+                <div class="hub-icon-orb">
+                    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Sparkles.png" 
+                         alt="Beneficios" class="emoji-3d" onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:2.3rem\'>🎓</span>'">
+                </div>
+                <span class="hub-step-tag">04 • Descuentos</span>
+                <h3 class="hub-card-title">Beneficios Graduado</h3>
+                <p class="hub-card-desc">Posgrados y Diplomados</p>
+            </button>
+
+            <!-- Punto 5 -->
+            <button onclick="navigateToSection('punto5', 5)" id="navBtn-5" class="hub-card interactive-card" style="--card-accent: #f97316; --orb-bg: #ffedd5;">
+                <div class="hub-icon-orb">
+                    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Memo.png" 
+                         alt="Actualiza tus datos" class="emoji-3d" onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:2.3rem\'>📝</span>'">
+                </div>
+                <span class="hub-step-tag">05 • ¡Sí Paga!</span>
+                <h3 class="hub-card-title">Actualiza tus Datos</h3>
+                <p class="hub-card-desc">Tu historia cuenta</p>
+            </button>
+
+            <!-- Punto 6 -->
+            <button onclick="navigateToSection('punto6', 6)" id="navBtn-6" class="hub-card interactive-card" style="--card-accent: #FFB800; --orb-bg: #fef3c7;">
+                <div class="hub-icon-orb">
+                    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Wrapped%20Gift.png" 
+                         alt="Sorteo" class="emoji-3d" onerror="this.outerHTML='<span class=\'emoji-3d\' style=\'font-size:2.3rem\'>🎁</span>'">
+                </div>
+                <span class="hub-step-tag">06 • Premios</span>
+                <h3 class="hub-card-title">Encuesta y Sorteo</h3>
+                <p class="hub-card-desc">¡Participa y gana!</p>
+            </button>
+        </div>
+    </section>
+
+    <!-- VISOR DINÁMICO DE CONTENIDOS (PUNTOS 2 AL 6) -->
+    <main id="visor-contenido" class="content-viewer container">
+
+        <!-- ==========================================
+             PUNTO 2: EMPLEABILIDAD
+             ========================================== -->
+        <section id="punto2" class="tab-panel active">
+            <div class="panel-card">
+                <div class="panel-banner">
+                    <img src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1600" 
+                         alt="Empleabilidad UCN" class="panel-banner-img"
+                         onerror="this.src='https://placehold.co/1200x400/003876/FFFFFF?text=Empleabilidad+UCN'">
+                    <div class="panel-banner-gradient"></div>
+                    <div class="panel-banner-content">
+                        <div class="panel-banner-left">
+                            <span class="panel-banner-emoji emoji-3d">💼</span>
+                            <div>
+                                <span class="panel-banner-kicker">Punto 2 • Desarrollo Profesional</span>
+                                <h3 class="panel-banner-title">Empleabilidad: fortalece tu perfil profesional</h3>
+                            </div>
+                        </div>
+                        <a href="https://ucn.edu.co/centros-y-servicios/pastoral-y-bienestar/consultame/" target="_blank" rel="noopener noreferrer" class="btn-primary-gold">
+                            <span>🤝 Solicita una asesoría laboral</span>
+                            <i class="ph-bold ph-arrow-up-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+                    <p class="tips-intro">
+                        <i class="ph-fill ph-sparkle" style="color: var(--ucn-light-blue); font-size: 1.2rem;"></i>
+                        Explora los 6 tips clave para potenciar tu empleabilidad y pon a prueba tus decisiones en el simulador:
+                    </p>
+
+                    <div class="tips-grid">
+                        <!-- Tip 1 -->
+                        <div class="tip-card interactive-card">
+                            <div>
+                                <div class="tip-top">
+                                    <span class="tip-badge">Tip 1</span>
+                                    <span class="emoji-3d" style="font-size: 2.3rem;">📄</span>
+                                </div>
+                                <h4 class="tip-title">Hoja de vida que destaque</h4>
+                                <ul class="tip-list">
+                                    <li><i class="ph-fill ph-check-circle"></i><span>Estructura y organización clara de la hoja de vida.</span></li>
+                                    <li><i class="ph-fill ph-check-circle"></i><span>Cómo presentar la formación, la experiencia y las competencias.</span></li>
+                                    <li><i class="ph-fill ph-check-circle"></i><span>Consejos para adaptar la hoja de vida a cada vacante.</span></li>
+                                </ul>
+                            </div>
+                            <button onclick="openTipModal(1)" class="btn-tip-action">
+                                <span>Ver consejos prácticos</span>
+                                <i class="ph-bold ph-plus-circle"></i>
+                            </button>
+                        </div>
+
+                        <!-- Tip 2 -->
+                        <div class="tip-card interactive-card">
+                            <div>
+                                <div class="tip-top">
+                                    <span class="tip-badge">Tip 2</span>
+                                    <span class="emoji-3d" style="font-size: 2.3rem;">🎙️</span>
+                                </div>
+                                <h4 class="tip-title">Prepárate para una entrevista laboral</h4>
+                                <ul class="tip-list">
+                                    <li><i class="ph-fill ph-check-circle"></i><span>Recomendaciones antes y durante la entrevista.</span></li>
+                                    <li><i class="ph-fill ph-check-circle"></i><span>Preguntas frecuentes y cómo responderlas con seguridad.</span></li>
+                                    <li><i class="ph-fill ph-check-circle"></i><span>Comunicación asertiva y cómo demostrar el valor profesional.</span></li>
+                                </ul>
+                            </div>
+                            <button onclick="openTipModal(2)" class="btn-tip-action">
+                                <span>Guía para entrevistas</span>
+                                <i class="ph-bold ph-plus-circle"></i>
+                            </button>
+                        </div>
+
+                        <!-- Tip 3 -->
+                        <div class="tip-card interactive-card">
+                            <div>
+                                <div class="tip-top">
+                                    <span class="tip-badge">Tip 3</span>
+                                    <span class="emoji-3d" style="font-size: 2.3rem;">🌐</span>
+                                </div>
+                                <h4 class="tip-title">Tu perfil profesional en el mundo digital</h4>
+                                <ul class="tip-list">
+                                    <li><i class="ph-fill ph-check-circle"></i><span>Recomendaciones para fortalecer el perfil de LinkedIn.</span></li>
+                                    <li><i class="ph-fill ph-check-circle"></i><span>Uso de portales de empleo y alertas de vacantes.</span></li>
+                                    <li><i class="ph-fill ph-check-circle"></i><span>Construcción de una marca personal digital sólida.</span></li>
+                                </ul>
+                            </div>
+                            <button onclick="openTipModal(3)" class="btn-tip-action">
+                                <span>Checklist de perfil digital</span>
+                                <i class="ph-bold ph-plus-circle"></i>
+                            </button>
+                        </div>
+
+                        <!-- Tip 4 -->
+                        <div class="tip-card interactive-card">
+                            <div>
+                                <div class="tip-top">
+                                    <span class="tip-badge">Tip 4</span>
+                                    <span class="emoji-3d" style="font-size: 2.3rem;">🤖</span>
+                                </div>
+                                <h4 class="tip-title">La inteligencia artificial como aliada</h4>
+                                <ul class="tip-list">
+                                    <li><i class="ph-fill ph-check-circle"></i><span>Herramientas de IA para mejorar la hoja de vida.</span></li>
+                                    <li><i class="ph-fill ph-check-circle"></i><span>Simulación y preparación de entrevistas.</span></li>
+                                    <li><i class="ph-fill ph-check-circle"></i><span>Uso responsable de la IA y verificación de la información.</span></li>
+                                </ul>
+                            </div>
+                            <button onclick="openTipModal(4)" class="btn-tip-action">
+                                <span>Ver ideas con IA</span>
+                                <i class="ph-bold ph-plus-circle"></i>
+                            </button>
+                        </div>
+
+                        <!-- Tip 5 -->
+                        <div class="tip-card highlight interactive-card">
+                            <div>
+                                <div class="tip-top">
+                                    <span class="tip-badge">Tip 5 • Interactivo</span>
+                                    <span class="emoji-3d" style="font-size: 2.3rem;">🧩</span>
+                                </div>
+                                <h4 class="tip-title">¿Qué harías en esta situación?</h4>
+                                <ul class="tip-list">
+                                    <li><i class="ph-fill ph-star" style="color: var(--ucn-amber);"></i><span>Casos interactivos sobre búsqueda de empleo.</span></li>
+                                    <li><i class="ph-fill ph-star" style="color: var(--ucn-amber);"></i><span>Preguntas de selección múltiple con retroalimentación.</span></li>
+                                    <li><i class="ph-fill ph-star" style="color: var(--ucn-amber);"></i><span>Recomendaciones prácticas según cada situación.</span></li>
+                                </ul>
+                            </div>
+                            <a href="#simulador-casos" class="btn-primary-gold" style="width: 100%; justify-content: center; padding: 0.75rem 1rem; font-size: 0.82rem;">
+                                <span>Resolver casos abajo</span>
+                                <i class="ph-bold ph-arrow-down"></i>
+                            </a>
+                        </div>
+
+                        <!-- Tip 6 -->
+                        <div class="tip-card interactive-card">
+                            <div>
+                                <div class="tip-top">
+                                    <span class="tip-badge">Tip 6</span>
+                                    <span class="emoji-3d" style="font-size: 2.3rem;">🧭</span>
+                                </div>
+                                <h4 class="tip-title">Rutas de empleabilidad</h4>
+                                <ul class="tip-list">
+                                    <li><i class="ph-fill ph-check-circle"></i><span>Portales de empleo y servicios de intermediación laboral.</span></li>
+                                    <li><i class="ph-fill ph-check-circle"></i><span>Recursos de orientación profesional.</span></li>
+                                    <li><i class="ph-fill ph-check-circle"></i><span>Oportunidades y servicios disponibles para los graduados UCN.</span></li>
+                                </ul>
+                            </div>
+                            <a href="https://ucn.edu.co/centros-y-servicios/pastoral-y-bienestar/consultame/" target="_blank" rel="noopener noreferrer" class="btn-tip-action" style="background: var(--ucn-blue); color: var(--white);">
+                                <span>Solicita una asesoría laboral</span>
+                                <i class="ph-bold ph-arrow-square-out"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- SIMULADOR DE CASOS (PUNTO 2.5) -->
+                    <div id="simulador-casos" class="simulator-box">
+                        <div class="simulator-header">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <span class="emoji-3d" style="font-size: 3rem;">🎯</span>
+                                <div>
+                                    <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--ucn-gold);">Simulador Práctico • Punto 2.5</span>
+                                    <h4 style="font-size: 1.45rem; font-weight: 800;">¿Qué harías en esta situación?</h4>
+                                </div>
+                            </div>
+                            <div class="scen-tabs">
+                                <button onclick="loadScenario(0)" id="scenBtn-0" class="scen-btn active">Caso 1: Hoja de Vida</button>
+                                <button onclick="loadScenario(1)" id="scenBtn-1" class="scen-btn">Caso 2: Entrevista</button>
+                                <button onclick="loadScenario(2)" id="scenBtn-2" class="scen-btn">Caso 3: Uso de IA</button>
+                            </div>
+                        </div>
+
+                        <div class="simulator-grid">
+                            <div>
+                                <div class="question-box">
+                                    <span id="scenarioTag" style="font-size: 0.75rem; font-weight: 800; color: #67e8f9; text-transform: uppercase;">Situación 1 de 3</span>
+                                    <p id="scenarioQuestion" style="font-size: 1.02rem; font-weight: 600; margin-top: 0.35rem;"></p>
+                                </div>
+                                <div id="scenarioOptions" class="options-stack"></div>
+                            </div>
+
+                            <div id="scenarioFeedbackBox" class="feedback-panel">
+                                <span class="emoji-3d" style="font-size: 3rem; margin-bottom: 0.5rem;">💡</span>
+                                <h5 style="font-size: 1.05rem; color: var(--ucn-gold);">Elige una opción</h5>
+                                <p style="font-size: 0.85rem; color: var(--slate-200); margin-top: 0.35rem;">
+                                    Selecciona una respuesta para descubrir recomendaciones prácticas al instante.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PUNTO 3: CANALES DE COMUNICACIÓN
+             ========================================== -->
+        <section id="punto3" class="tab-panel">
+            <div class="panel-card">
+                <div class="panel-banner">
+                    <img src="https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=1600" 
+                         alt="Canales de comunicación UCN" class="panel-banner-img"
+                         onerror="this.src='https://placehold.co/1200x400/0066CC/FFFFFF?text=Canales+de+Comunicacion'">
+                    <div class="panel-banner-gradient"></div>
+                    <div class="panel-banner-content">
+                        <div class="panel-banner-left">
+                            <span class="panel-banner-emoji emoji-3d">📲</span>
+                            <div>
+                                <span class="panel-banner-kicker">Punto 3 • Comunidad UCN</span>
+                                <h3 class="panel-banner-title">Canales de comunicación: ¡sigamos conectados!</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+                    <div style="margin-bottom: 2.5rem;">
+                        <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--emerald-600);">3.1 Únete a nuestra comunidad de WhatsApp</span>
+                        <h4 style="font-size: 1.5rem; color: var(--ucn-dark); margin: 0.25rem 0 0.4rem;">Grupos de WhatsApp por facultad</h4>
+                        <p style="font-size: 0.92rem; color: var(--slate-600); margin-bottom: 1.5rem;">
+                            Invitamos a nuestros graduados a unirse al grupo de WhatsApp correspondiente a su facultad para mantenerse informados sobre novedades, eventos, oportunidades y actividades de interés institucional.
+                        </p>
+
+                        <div class="two-col-grid">
+                            <a href="https://chat.whatsapp.com/FCfeN2t6klD8i9SBWeBoWf" target="_blank" rel="noopener noreferrer" class="wa-card interactive-card">
+                                <div class="wa-card-left">
+                                    <span class="emoji-3d" style="font-size: 2.5rem;">📊</span>
+                                    <div>
+                                        <span class="wa-tag">Facultad 1</span>
+                                        <h5 class="wa-title">Ciencias Económicas, Administrativas y Contables</h5>
+                                        <span class="wa-cta"><i class="ph-fill ph-whatsapp-logo"></i> Unirme al grupo</span>
+                                    </div>
+                                </div>
+                                <div class="wa-arrow"><i class="ph-bold ph-arrow-up-right"></i></div>
+                            </a>
+
+                            <a href="https://chat.whatsapp.com/KYjSTuq3e1HDYqF9BN7fL6" target="_blank" rel="noopener noreferrer" class="wa-card interactive-card">
+                                <div class="wa-card-left">
+                                    <span class="emoji-3d" style="font-size: 2.5rem;">📚</span>
+                                    <div>
+                                        <span class="wa-tag">Facultad 2</span>
+                                        <h5 class="wa-title">Educación y Ciencias Sociales</h5>
+                                        <span class="wa-cta"><i class="ph-fill ph-whatsapp-logo"></i> Unirme al grupo</span>
+                                    </div>
+                                </div>
+                                <div class="wa-arrow"><i class="ph-bold ph-arrow-up-right"></i></div>
+                            </a>
+
+                            <a href="https://chat.whatsapp.com/HaC2qrn8ihyHkgM2FO3ntL" target="_blank" rel="noopener noreferrer" class="wa-card interactive-card">
+                                <div class="wa-card-left">
+                                    <span class="emoji-3d" style="font-size: 2.5rem;">🕊️</span>
+                                    <div>
+                                        <span class="wa-tag">Facultad 3</span>
+                                        <h5 class="wa-title">Humanidades y Ciencias Eclesiásticas</h5>
+                                        <span class="wa-cta"><i class="ph-fill ph-whatsapp-logo"></i> Unirme al grupo</span>
+                                    </div>
+                                </div>
+                                <div class="wa-arrow"><i class="ph-bold ph-arrow-up-right"></i></div>
+                            </a>
+
+                            <a href="https://chat.whatsapp.com/GAeFxkYETNiH1k0tgWnoLP" target="_blank" rel="noopener noreferrer" class="wa-card interactive-card">
+                                <div class="wa-card-left">
+                                    <span class="emoji-3d" style="font-size: 2.5rem;">⚙️</span>
+                                    <div>
+                                        <span class="wa-tag">Facultad 4</span>
+                                        <h5 class="wa-title">Ingeniería y Ciencias Ambientales</h5>
+                                        <span class="wa-cta"><i class="ph-fill ph-whatsapp-logo"></i> Unirme al grupo</span>
+                                    </div>
+                                </div>
+                                <div class="wa-arrow"><i class="ph-bold ph-arrow-up-right"></i></div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div style="padding-top: 2rem; border-top: 1px solid var(--slate-200);">
+                        <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--ucn-light-blue);">3.2 Síguenos en redes sociales</span>
+                        <h4 style="font-size: 1.5rem; color: var(--ucn-dark); margin: 0.25rem 0 0.4rem;">Centro Virtual del Graduado</h4>
+                        <p style="font-size: 0.92rem; color: var(--slate-600); margin-bottom: 1.5rem;">
+                            Conoce noticias, eventos, historias, convocatorias y oportunidades para continuar conectados con la Católica del Norte.
+                        </p>
+
+                        <div class="two-col-grid">
+                            <a href="https://www.facebook.com/share/1QxSqxaP2P/" target="_blank" rel="noopener noreferrer" class="social-banner-card bg-facebook interactive-card">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <i class="ph-fill ph-facebook-logo" style="font-size: 2.8rem;"></i>
+                                    <div>
+                                        <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; opacity: 0.85;">Página Oficial</span>
+                                        <h5 style="font-size: 1.25rem; font-weight: 800;">Facebook Graduados UCN</h5>
+                                        <p style="font-size: 0.8rem; opacity: 0.9;">Haz clic para seguirnos</p>
+                                    </div>
+                                </div>
+                                <span class="emoji-3d" style="font-size: 2.4rem;">👍</span>
+                            </a>
+
+                            <a href="https://www.instagram.com/graduados_ucn?utm_source=qr&igsh=MW9uYms2emxmejEwNA==" target="_blank" rel="noopener noreferrer" class="social-banner-card bg-instagram interactive-card">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <i class="ph-fill ph-instagram-logo" style="font-size: 2.8rem;"></i>
+                                    <div>
+                                        <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; opacity: 0.85;">@graduados_ucn</span>
+                                        <h5 style="font-size: 1.25rem; font-weight: 800;">Instagram Graduados UCN</h5>
+                                        <p style="font-size: 0.8rem; opacity: 0.9;">Novedades, historias y convocatorias</p>
+                                    </div>
+                                </div>
+                                <span class="emoji-3d" style="font-size: 2.4rem;">📸</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PUNTO 4: BENEFICIOS DE SER GRADUADO UCN
+             ========================================== -->
+        <section id="punto4" class="tab-panel">
+            <div class="panel-card">
+                <div class="panel-banner">
+                    <img src="https://images.pexels.com/photos/4145190/pexels-photo-4145190.jpeg?auto=compress&cs=tinysrgb&w=1600" 
+                         alt="Beneficios Graduado UCN" class="panel-banner-img"
+                         onerror="this.src='https://placehold.co/1200x400/003876/FFB800?text=Beneficios+Graduados+UCN'">
+                    <div class="panel-banner-gradient"></div>
+                    <div class="panel-banner-content">
+                        <div class="panel-banner-left">
+                            <span class="panel-banner-emoji emoji-3d">🎓</span>
+                            <div>
+                                <span class="panel-banner-kicker">Punto 4 • Formación Continua</span>
+                                <h3 class="panel-banner-title">Beneficios de ser graduado UCN</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+                    <div style="margin-bottom: 2.5rem;">
+                        <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--ucn-light-blue);">4.1 ¡Ser graduado UCN tiene beneficios!</span>
+                        <h4 style="font-size: 1.5rem; color: var(--ucn-dark); margin: 0.25rem 0 0.4rem;">Descuentos especiales para continuar tu formación</h4>
+                        <p style="font-size: 0.92rem; color: var(--slate-600); margin-bottom: 1.5rem;">
+                            ¡Sigue aprendiendo, fortalece tu perfil profesional y descubre nuevas oportunidades para crecer!
+                        </p>
+
+                        <div class="two-col-grid">
+                            <div class="discount-card discount-blue interactive-card">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                    <div>
+                                        <span class="section-pill" style="margin-bottom: 0;">Posgrados UCN</span>
+                                        <div class="discount-number">20 %</div>
+                                        <h5 style="font-size: 1.35rem; font-weight: 800;">De descuento en programas de posgrado</h5>
+                                    </div>
+                                    <span class="emoji-3d" style="font-size: 3.5rem;">🏅</span>
+                                </div>
+                                <p style="font-size: 0.88rem; color: var(--slate-200); margin-top: 1rem;">
+                                    Especialízate con nuestra oferta 100% virtual y lleva tu perfil profesional al siguiente nivel.
+                                </p>
+                            </div>
+
+                            <div class="discount-card discount-cyan interactive-card">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                    <div>
+                                        <span class="section-pill" style="background: rgba(255,255,255,0.2); color: #fff; border-color: transparent; margin-bottom: 0;">Educación Continua</span>
+                                        <div class="discount-number" style="color: #fff;">10 %</div>
+                                        <h5 style="font-size: 1.35rem; font-weight: 800;">De descuento en diplomados</h5>
+                                    </div>
+                                    <span class="emoji-3d" style="font-size: 3.5rem;">💡</span>
+                                </div>
+                                <p style="font-size: 0.88rem; color: #e0f2fe; margin-top: 1rem;">
+                                    Actualiza tus conocimientos y desarrolla nuevas competencias clave para el mundo laboral actual.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding-top: 2rem; border-top: 1px solid var(--slate-200);">
+                        <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--ucn-light-blue);">4.2 Explora nuestra oferta académica</span>
+                        <h4 style="font-size: 1.5rem; color: var(--ucn-dark); margin: 0.25rem 0 1.25rem;">Conoce nuestras alternativas de formación</h4>
+
+                        <div class="two-col-grid">
+                            <div class="tip-card interactive-card">
+                                <div>
+                                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                        <span class="emoji-3d" style="font-size: 2.3rem;">💻</span>
+                                        <h5 style="font-size: 1.2rem; font-weight: 800; color: var(--ucn-dark);">Educación superior: programas virtuales</h5>
+                                    </div>
+                                    <p style="font-size: 0.9rem; color: var(--slate-600); margin-bottom: 1.5rem;">
+                                        Conoce los programas de educación superior que ofrece la Católica del Norte y encuentra nuevas oportunidades para continuar tu formación académica.
+                                    </p>
+                                </div>
+                                <a href="https://ucn.edu.co/programas-virtuales/" target="_blank" rel="noopener noreferrer" class="btn-tip-action" style="background: var(--ucn-blue); color: var(--white); padding: 0.9rem;">
+                                    <span>Explorar Programas Virtuales</span>
+                                    <i class="ph-bold ph-arrow-square-out"></i>
+                                </a>
+                            </div>
+
+                            <div class="tip-card interactive-card">
+                                <div>
+                                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                        <span class="emoji-3d" style="font-size: 2.3rem;">🚀</span>
+                                        <h5 style="font-size: 1.2rem; font-weight: 800; color: var(--ucn-dark);">Extensión y educación continua</h5>
+                                    </div>
+                                    <p style="font-size: 0.9rem; color: var(--slate-600); margin-bottom: 1.5rem;">
+                                        Actualiza tus conocimientos y desarrolla nuevas competencias a través de diplomados y otras alternativas de formación continua.
+                                    </p>
+                                </div>
+                                <a href="https://ucn.edu.co/extension/educacion-continua/" target="_blank" rel="noopener noreferrer" class="btn-primary-gold" style="width: 100%; justify-content: center; padding: 0.9rem;">
+                                    <span>Ver Extensión y Educación Continua</span>
+                                    <i class="ph-bold ph-arrow-square-out"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PUNTO 5: ACTUALIZA TUS DATOS: ¡SÍ PAGA!
+             ========================================== -->
+        <section id="punto5" class="tab-panel">
+            <div class="panel-card">
+                <div class="panel-banner">
+                    <img src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1600" 
+                         alt="Actualiza tus datos UCN" class="panel-banner-img"
+                         onerror="this.src='https://placehold.co/1200x400/003876/FFFFFF?text=Actualiza+tus+datos'">
+                    <div class="panel-banner-gradient"></div>
+                    <div class="panel-banner-content">
+                        <div class="panel-banner-left">
+                            <span class="panel-banner-emoji emoji-3d">📝</span>
+                            <div>
+                                <span class="panel-banner-kicker">Punto 5 • Vínculo Institucional</span>
+                                <h3 class="panel-banner-title">Actualiza tus datos: ¡sí paga!</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+                    <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--ucn-light-blue);">5.1 Tu historia es importante para la UCN</span>
+                    <h4 style="font-size: 1.5rem; color: var(--ucn-dark); margin: 0.25rem 0 1.5rem;">¿Por qué es importante actualizar tus datos?</h4>
+
+                    <div class="four-col-grid">
+                        <div class="reason-card interactive-card">
+                            <span class="emoji-3d" style="font-size: 2.8rem; margin-bottom: 0.75rem;">📈</span>
+                            <h5 style="font-size: 1rem; font-weight: 800; color: var(--ucn-dark);">Medir el impacto de la formación</h5>
+                            <p style="font-size: 0.82rem; color: var(--slate-600); margin-top: 0.4rem;">Conocer el aporte de nuestros graduados en la sociedad y las regiones.</p>
+                        </div>
+                        <div class="reason-card interactive-card">
+                            <span class="emoji-3d" style="font-size: 2.8rem; margin-bottom: 0.75rem;">⭐</span>
+                            <h5 style="font-size: 1rem; font-weight: 800; color: var(--ucn-dark);">Fortalecer la calidad académica</h5>
+                            <p style="font-size: 0.82rem; color: var(--slate-600); margin-top: 0.4rem;">Tu experiencia impulsa la mejora continua de nuestros programas.</p>
+                        </div>
+                        <div class="reason-card interactive-card">
+                            <span class="emoji-3d" style="font-size: 2.8rem; margin-bottom: 0.75rem;">🏆</span>
+                            <h5 style="font-size: 1rem; font-weight: 800; color: var(--ucn-dark);">Conocer tus logros</h5>
+                            <p style="font-size: 0.82rem; color: var(--slate-600); margin-top: 0.4rem;">Celebrar tus metas profesionales, proyectos y reconocimientos.</p>
+                        </div>
+                        <div class="reason-card interactive-card">
+                            <span class="emoji-3d" style="font-size: 2.8rem; margin-bottom: 0.75rem;">🤝</span>
+                            <h5 style="font-size: 1rem; font-weight: 800; color: var(--ucn-dark);">Fortalecer el vínculo institucional</h5>
+                            <p style="font-size: 0.82rem; color: var(--slate-600); margin-top: 0.4rem;">Mantenerte al día con eventos, empleabilidad y beneficios exclusivos.</p>
+                        </div>
+                    </div>
+
+                    <div class="cta-strip">
+                        <div style="max-width: 620px;">
+                            <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--ucn-gold);">5.2 ¡Actualizar tus datos es muy fácil!</span>
+                            <h4 style="font-size: 1.5rem; margin: 0.25rem 0 0.4rem;">Te invitamos a diligenciar el formulario de actualización de datos</h4>
+                            <p style="font-size: 0.92rem; color: #dbeafe;">
+                                Dedica unos minutos a compartir información actualizada sobre tu trayectoria profesional.
+                            </p>
+                        </div>
+                        <a href="https://encuestas.ucn.edu.co/index.php/934325?newtest=Y&lang=es" target="_blank" rel="noopener noreferrer" onclick="celebrateGraduado()" class="btn-primary-gold">
+                            <span>Actualizar mis datos aquí</span>
+                            <i class="ph-bold ph-arrow-square-out" style="font-size: 1.2rem;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PUNTO 6: ENCUESTA Y SORTEO DÍA DEL GRADUADO
+             ========================================== -->
+        <section id="punto6" class="tab-panel">
+            <div class="panel-card">
+                <div class="panel-banner">
+                    <img src="https://images.pexels.com/photos/1190298/pexels-photo-1190298.jpeg?auto=compress&cs=tinysrgb&w=1600" 
+                         alt="Encuesta y Sorteo Día del Graduado UCN" class="panel-banner-img"
+                         onerror="this.src='https://placehold.co/1200x400/0A192F/FFB800?text=Encuesta+y+Sorteo+UCN'">
+                    <div class="panel-banner-gradient"></div>
+                    <div class="panel-banner-content">
+                        <div class="panel-banner-left">
+                            <span class="panel-banner-emoji emoji-3d">🎁</span>
+                            <div>
+                                <span class="panel-banner-kicker">Punto 6 • Celebración Especial</span>
+                                <h3 class="panel-banner-title">Encuesta y sorteo por el Día del Graduado</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+                    <div class="video-grid" style="color: var(--slate-800);">
+                        <div>
+                            <span class="hub-badge">6.1 ¡Participa y gana!</span>
+                            <h4 style="font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--ucn-dark); margin: 0.3rem 0 0.85rem;">
+                                ¡Tu participación cuenta!
+                            </h4>
+                            <p style="font-size: 0.98rem; color: var(--slate-600); margin-bottom: 1.5rem;">
+                                En el <strong>Día del Graduado UCN</strong> queremos conocer tu experiencia y seguir fortaleciendo nuestra comunidad. Diligencia la encuesta y participa en el sorteo de premios.
+                            </p>
+
+                            <div style="background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 1.35rem; padding: 1.5rem; margin-bottom: 1.75rem;">
+                                <h5 style="font-size: 1.05rem; color: var(--ucn-dark); margin-bottom: 1rem;">📋 6.2 ¿Cómo participar?</h5>
+                                <div class="two-col-grid">
+                                    <div style="background: var(--white); padding: 1rem; border-radius: 1rem; border: 1px solid var(--slate-200); display: flex; gap: 0.75rem; align-items: center;">
+                                        <span style="width: 2rem; height: 2rem; border-radius: 0.6rem; background: var(--ucn-blue); color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</span>
+                                        <span style="font-size: 0.88rem; font-weight: 600;">Ingresa al enlace de la encuesta.</span>
+                                    </div>
+                                    <div style="background: var(--white); padding: 1rem; border-radius: 1rem; border: 1px solid var(--slate-200); display: flex; gap: 0.75rem; align-items: center;">
+                                        <span style="width: 2rem; height: 2rem; border-radius: 0.6rem; background: var(--ucn-gold); color: var(--ucn-dark); font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</span>
+                                        <span style="font-size: 0.88rem; font-weight: 600;">Responde las preguntas y completa el formulario.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <a href="https://encuestas.ucn.edu.co/index.php/245315?lang=es" target="_blank" rel="noopener noreferrer" onclick="celebrateGraduado()" class="btn-primary-gold" style="font-size: 1.05rem; padding: 1.1rem 2rem;">
+                                <span>🎉 Diligencia la encuesta aquí</span>
+                                <i class="ph-bold ph-arrow-square-out" style="font-size: 1.3rem;"></i>
+                            </a>
+                        </div>
+
+                        <div class="discount-card discount-blue" style="text-align: center; align-items: center;">
+                            <span class="emoji-3d" style="font-size: 4rem; margin-bottom: 1rem;">🥂</span>
+                            <h5 style="font-size: 1.5rem; color: var(--ucn-gold); margin-bottom: 0.75rem;">
+                                ¡Celebremos juntos el orgullo de ser graduados UCN!
+                            </h5>
+                            <p style="font-size: 0.95rem; color: var(--slate-200); font-style: italic;">
+                                “Tu historia nos inspira y nos recuerda que, una vez parte de la Católica del Norte, siempre tendrás un lugar en nuestra comunidad.”
+                            </p>
+                            <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid rgba(255,255,255,0.15); width: 100%; display: flex; justify-content: center; gap: 1.2rem; font-size: 2rem;">
+                                <span class="emoji-3d">🎓</span>
+                                <span class="emoji-3d">💙</span>
+                                <span class="emoji-3d">🌟</span>
+                                <span class="emoji-3d">🏆</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL PARA LOS TIPS DE EMPLEABILIDAD -->
+    <div id="tipModal" class="modal-backdrop">
+        <div class="modal-box">
+            <button onclick="closeTipModal()" class="modal-close" aria-label="Cerrar">
+                <i class="ph-bold ph-x"></i>
+            </button>
+            <div id="modalEmoji" class="emoji-3d" style="font-size: 3.2rem; margin-bottom: 0.5rem;">📄</div>
+            <span id="modalTag" style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--ucn-light-blue); display: block;">Guía Práctica</span>
+            <h4 id="modalTitle" style="font-size: 1.45rem; color: var(--ucn-dark); margin: 0.25rem 0 1rem;">Título</h4>
+            <div id="modalBody" style="font-size: 0.92rem; color: var(--slate-600); display: flex; flex-direction: column; gap: 0.75rem;"></div>
+            <div style="margin-top: 1.75rem; padding-top: 1rem; border-top: 1px solid var(--slate-200); display: flex; justify-content: flex-end; gap: 0.75rem;">
+                <a href="https://ucn.edu.co/centros-y-servicios/pastoral-y-bienestar/consultame/" target="_blank" rel="noopener noreferrer" class="btn-primary-gold" style="padding: 0.65rem 1.1rem; font-size: 0.82rem;">
+                    Solicitar asesoría laboral
+                </a>
+                <button onclick="closeTipModal()" class="btn-tip-action" style="width: auto; background: var(--ucn-blue); color: #fff;">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div style="display: flex; align-items: center; gap: 0.85rem;">
+                <span class="emoji-3d" style="font-size: 2.2rem;">🎓</span>
+                <div>
+                    <p style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800;">Fundación Universitaria Católica del Norte</p>
+                    <p style="font-size: 0.78rem; color: var(--slate-300);">Centro Virtual del Graduado • Día del Graduado UCN 2026</p>
+                </div>
+            </div>
+            <div class="footer-links">
+                <a href="https://ucn.edu.co/programas-virtuales/" target="_blank" rel="noopener noreferrer">Programas Virtuales</a>
+                <span>•</span>
+                <a href="https://ucn.edu.co/extension/educacion-continua/" target="_blank" rel="noopener noreferrer">Educación Continua</a>
+                <span>•</span>
+                <a href="https://encuestas.ucn.edu.co/index.php/934325?newtest=Y&lang=es" target="_blank" rel="noopener noreferrer">Actualizar Datos</a>
+                <span>•</span>
+                <a href="https://encuestas.ucn.edu.co/index.php/245315?lang=es" target="_blank" rel="noopener noreferrer">Encuesta y Sorteo</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT INTERACTIVO -->
+    <script>
+        // 1. CARRUSEL DEL BANNER CON EL MENSAJE INSTITUCIONAL
+        let currentSlide = 0;
+        const slideData = [
+            {
+                title: '¡Celebremos juntos el orgullo de ser <span class="text-gradient-gold">graduados UCN!</span>',
+                subtitle: '“Tu historia nos inspira y nos recuerda que, una vez parte de la Católica del Norte, siempre tendrás un lugar en nuestra comunidad.”'
+            },
+            {
+                title: 'Fortalece tu perfil y conecta con <span class="text-gradient-gold">nuevas oportunidades</span>',
+                subtitle: '“Tu historia nos inspira y nos recuerda que, una vez parte de la Católica del Norte, siempre tendrás un lugar en nuestra comunidad.”'
+            },
+            {
+                title: 'Accede a beneficios exclusivos y <span class="text-gradient-gold">participa en el sorteo</span>',
+                subtitle: '“Tu historia nos inspira y nos recuerda que, una vez parte de la Católica del Norte, siempre tendrás un lugar en nuestra comunidad.”'
+            }
+        ];
+
+        function changeSlide(index) {
+            const slides = document.querySelectorAll('.hero-slide');
+            const dots = document.querySelectorAll('.slide-dot');
+            currentSlide = index;
+
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+
+            document.getElementById('bannerTitle').innerHTML = slideData[index].title;
+            document.getElementById('bannerSubtitle').textContent = slideData[index].subtitle;
+        }
+
+        setInterval(() => {
+            changeSlide((currentSlide + 1) % 3);
+        }, 6500);
+
+        // 2. NAVEGACIÓN ENTRE CÁPSULAS INTERACTIVAS
+        function scrollToVideo() {
+            document.getElementById('video-saludo').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function navigateToSection(sectionId, pointNum) {
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+
+            const target = document.getElementById(sectionId);
+            if (target) {
+                target.classList.add('active');
+                document.getElementById('visor-contenido').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            for (let i = 2; i <= 6; i++) {
+                const btn = document.getElementById(`navBtn-${i}`);
+                if (btn) {
+                    btn.classList.toggle('active', i === pointNum);
+                }
+            }
+        }
+
+        // 3. SIMULADOR INTERACTIVO "¿QUÉ HARÍAS EN ESTA SITUACIÓN?"
+        const scenarios = [
+            {
+                tag: 'Caso 1 de 3 • Hoja de Vida y Vacantes',
+                question: 'Encuentras una vacante ideal para tu perfil como graduado UCN, pero piden experiencia liderando proyectos. Tienes logros importantes en tu trayectoria, pero tu hoja de vida actual es una lista genérica de funciones. ¿Qué harías?',
+                options: [
+                    {
+                        text: 'Envío mi hoja de vida tal como está para postularme rápido.',
+                        correct: false,
+                        feedback: 'Enviar una hoja de vida genérica reduce tus probabilidades. Dedica unos minutos a adaptarla resaltando las palabras clave de la vacante.'
+                    },
+                    {
+                        text: 'Adapto mi hoja de vida destacando logros medibles, competencias clave y términos de la vacante.',
+                        correct: true,
+                        feedback: '¡Excelente decisión! Personalizar tu perfil evidenciando resultados y alineando tus competencias multiplica tus opciones de avanzar a entrevista.'
+                    },
+                    {
+                        text: 'Descarto la oferta sin intentarlo.',
+                        correct: false,
+                        feedback: 'Si cuentas con las competencias y logros transferibles, organiza estratégicamente tu información y postúlate con seguridad.'
+                    }
+                ]
+            },
+            {
+                tag: 'Caso 2 de 3 • Entrevista Laboral',
+                question: 'En plena entrevista te preguntan: "¿Cuál ha sido tu mayor reto profesional y cómo lo resolviste?". ¿Cómo respondes de forma asertiva?',
+                options: [
+                    {
+                        text: 'Uso la estructura STAR: describo la Situación, la Tarea, la Acción que lideré y el Resultado alcanzado.',
+                        correct: true,
+                        feedback: '¡Muy bien! Responder con ejemplos estructurados demuestra comunicación asertiva y evidencia tu valor profesional como graduado UCN.'
+                    },
+                    {
+                        text: 'Respondo que nunca he tenido ningún reto en el trabajo.',
+                        correct: false,
+                        feedback: 'Compartir un reto real y cómo lo transformaste en una solución demuestra madurez profesional y capacidad resolutiva.'
+                    },
+                    {
+                        text: 'Me enfoco únicamente en las dificultades sin explicar la solución.',
+                        correct: false,
+                        feedback: 'Procura que el 70% de tu respuesta se centre en las acciones positivas que tomaste y en los aprendizajes obtenidos.'
+                    }
+                ]
+            },
+            {
+                tag: 'Caso 3 de 3 • Inteligencia Artificial como Aliada',
+                question: 'Deseas apoyarte en herramientas de Inteligencia Artificial para optimizar tu hoja de vida y practicar una entrevista. ¿Cuál es el uso responsable?',
+                options: [
+                    {
+                        text: 'Copiar y pegar textos generados automáticamente sin revisarlos.',
+                        correct: false,
+                        feedback: 'Recuerda siempre verificar la información y asegurarte de que cada dato refleje fielmente tu trayectoria real.'
+                    },
+                    {
+                        text: 'Usar la IA para simular preguntas de entrevista y mejorar la redacción de mis logros reales, verificando toda la información.',
+                        correct: true,
+                        feedback: '¡Uso responsable y estratégico! La IA es una gran aliada cuando conserva tu autenticidad y veracidad profesional.'
+                    },
+                    {
+                        text: 'No preparar la entrevista confiando en improvisar todo.',
+                        correct: false,
+                        feedback: 'Simular preguntas frecuentes con anticipación fortalece tu seguridad y fluidez al momento de la entrevista.'
+                    }
+                ]
+            }
+        ];
+
+        function loadScenario(index) {
+            const scen = scenarios[index];
+            document.getElementById('scenarioTag').textContent = scen.tag;
+            document.getElementById('scenarioQuestion').textContent = scen.question;
+
+            for (let i = 0; i < 3; i++) {
+                const b = document.getElementById(`scenBtn-${i}`);
+                if (b) b.classList.toggle('active', i === index);
+            }
+
+            const optionsContainer = document.getElementById('scenarioOptions');
+            optionsContainer.innerHTML = '';
+
+            scen.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `<span class="option-num">${idx + 1}</span><span>${opt.text}</span>`;
+                btn.onclick = () => selectScenarioOption(opt);
+                optionsContainer.appendChild(btn);
+            });
+
+            const box = document.getElementById('scenarioFeedbackBox');
+            box.className = 'feedback-panel';
+            box.innerHTML = `
+                <span class="emoji-3d" style="font-size: 3rem; margin-bottom: 0.5rem;">💡</span>
+                <h5 style="font-size: 1.05rem; color: var(--ucn-gold);">Elige una opción</h5>
+                <p style="font-size: 0.85rem; color: var(--slate-200); margin-top: 0.35rem;">
+                    Selecciona una respuesta para descubrir recomendaciones prácticas al instante.
+                </p>
+            `;
+        }
+
+        function selectScenarioOption(opt) {
+            const box = document.getElementById('scenarioFeedbackBox');
+            if (opt.correct) {
+                box.className = 'feedback-panel correct';
+                box.innerHTML = `
+                    <span class="emoji-3d" style="font-size: 3rem; margin-bottom: 0.4rem;">🏆</span>
+                    <h5 style="font-size: 1.15rem; color: #6ee7b7;">¡Decisión Acertada!</h5>
+                    <p style="font-size: 0.9rem; color: #fff; margin-top: 0.4rem;">${opt.feedback}</p>
+                `;
+                celebrateGraduado();
+            } else {
+                box.className = 'feedback-panel warning';
+                box.innerHTML = `
+                    <span class="emoji-3d" style="font-size: 3rem; margin-bottom: 0.4rem;">🧭</span>
+                    <h5 style="font-size: 1.15rem; color: var(--ucn-gold);">Recomendación Práctica</h5>
+                    <p style="font-size: 0.9rem; color: #fff; margin-top: 0.4rem;">${opt.feedback}</p>
+                `;
+            }
+        }
+
+        // 4. MODALES DE LOS TIPS 1 AL 4
+        const tipDetails = {
+            1: {
+                emoji: '📄',
+                tag: 'Tip 1 • Hoja de Vida',
+                title: 'Hoja de vida que destaque',
+                body: `
+                    <p><strong>• Estructura y organización:</strong> utiliza un diseño limpio, jerarquía visual clara y datos de contacto actualizados.</p>
+                    <p><strong>• Formación, experiencia y competencias:</strong> presenta tus experiencias resaltando logros concretos y habilidades transferibles.</p>
+                    <p><strong>• Adaptación a cada vacante:</strong> identifica las palabras clave de la oferta laboral e intégralas de forma natural en tu perfil.</p>
+                `
+            },
+            2: {
+                emoji: '🎙️',
+                tag: 'Tip 2 • Entrevista Laboral',
+                title: 'Prepárate para una entrevista laboral',
+                body: `
+                    <p><strong>• Antes y durante:</strong> investiga sobre la organización, revisa tu cámara y audio si es virtual, y mantén una escucha activa.</p>
+                    <p><strong>• Preguntas frecuentes:</strong> prepara ejemplos reales de tu trayectoria utilizando la técnica STAR (Situación, Tarea, Acción, Resultado).</p>
+                    <p><strong>• Comunicación asertiva:</strong> expresa con claridad cómo tu formación en la UCN aporta soluciones al cargo.</p>
+                `
+            },
+            3: {
+                emoji: '🌐',
+                tag: 'Tip 3 • Mundo Digital',
+                title: 'Tu perfil profesional en el mundo digital',
+                body: `
+                    <p><strong>• Perfil de LinkedIn:</strong> redacta un titular con palabras clave de tu área, una fotografía profesional y un extracto enfocado en valor.</p>
+                    <p><strong>• Portales y alertas:</strong> configura alertas personalizadas en portales de empleo para postularte oportunamente.</p>
+                    <p><strong>• Marca personal digital:</strong> comparte reflexiones, proyectos y aprendizajes de tu sector profesional.</p>
+                `
+            },
+            4: {
+                emoji: '🤖',
+                tag: 'Tip 4 • Inteligencia Artificial',
+                title: 'La inteligencia artificial como aliada',
+                body: `
+                    <p><strong>• Mejora tu hoja de vida:</strong> apóyate en herramientas de IA para revisar ortografía, impacto de verbos de acción y síntesis profesional.</p>
+                    <p><strong>• Simulación de entrevistas:</strong> pídele a un asistente de IA que actúe como entrevistador de tu sector para practicar tus respuestas.</p>
+                    <p><strong>• Uso responsable:</strong> verifica siempre la exactitud de la información y conserva tu toque humano y auténtico.</p>
+                `
+            }
+        };
+
+        function openTipModal(num) {
+            const info = tipDetails[num];
+            if (!info) return;
+            document.getElementById('modalEmoji').textContent = info.emoji;
+            document.getElementById('modalTag').textContent = info.tag;
+            document.getElementById('modalTitle').textContent = info.title;
+            document.getElementById('modalBody').innerHTML = info.body;
+            document.getElementById('tipModal').classList.add('open');
+        }
+
+        function closeTipModal() {
+            document.getElementById('tipModal').classList.remove('open');
+        }
+
+        function celebrateGraduado() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 75,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#003876', '#00A8E8', '#FFB800', '#10B981']
+                });
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadScenario(0);
+        });
+    </script>
+</body>
+</html>
